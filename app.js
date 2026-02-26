@@ -4,9 +4,18 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import ejs from 'ejs';
 import dotenv from 'dotenv';
-import { pool, query } from './db.js';
+import pg from 'pg';
 
 dotenv.config();
+
+const { Pool } = pg;
+const pool = new Pool({
+  user: process.env.DB_USER,
+  host: process.env.DB_HOST,
+  database: process.env.DB_NAME,
+  password: process.env.DB_PASSWORD,
+  port: process.env.DB_PORT,
+});
 
 const app = express();
 const port = 3000;
