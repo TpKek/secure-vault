@@ -3,6 +3,10 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import ejs from 'ejs';
+import dotenv from 'dotenv';
+import { pool, query } from './db.js';
+
+dotenv.config();
 
 const app = express();
 const port = 3000;
@@ -23,6 +27,12 @@ app.get('/register', function (req, res) {
   res.render('register');
 });
 
-app.listen(port, function () {
-  console.log(`Server started on port ${port}`);
+app.listen(port, async function () {
+  try {
+    const result = await pool.query('SELECT NOW()');
+    console.log(`Server started on port ${port}`);
+    console.log('Database connected:', result.rows[0]);
+  } catch (err) {
+    console.error('Database connection error:', err.message);
+  }
 });
