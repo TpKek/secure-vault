@@ -1,18 +1,19 @@
-# SecureVault 🔐
+# Secure Vault 🔐
 
-A secure authentication application built with Express.js and EJS, demonstrating full-stack development skills with user registration, login functionality, and secure data handling.
+A secure authentication application built with Express.js, PostgreSQL, and EJS, demonstrating full-stack development skills with user registration, login functionality, and secure data handling.
 
 ## Features
 
-- User Registration
-- User Login
+- User Registration with PostgreSQL database
+- User Login with secure authentication
 - Secure secrets management
-- Session-based authentication
+- Parameterized SQL queries (SQL injection protection)
 - EJS templating for dynamic views
 
 ## Tech Stack
 
-- **Backend**: Express.js
+- **Backend**: Express.js (Node.js)
+- **Database**: PostgreSQL
 - **Templating**: EJS
 - **Authentication**: Session-based (extensible)
 - **Frontend**: HTML, CSS
@@ -22,13 +23,14 @@ A secure authentication application built with Express.js and EJS, demonstrating
 ### Prerequisites
 
 - Node.js installed
+- PostgreSQL database
 - npm or yarn
 
 ### Installation
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/secure-vault.git
+git clone https://github.com/TpKek/secure-vault.git
 
 # Navigate to the project directory
 cd secure-vault
@@ -36,11 +38,28 @@ cd secure-vault
 # Install dependencies
 npm install
 
+# Set up your database
+# Create a PostgreSQL database named 'secrets'
+# Update .env file with your database credentials
+
 # Start the server
 npm start
 ```
 
 The application will start on `http://localhost:3000`
+
+## Environment Variables
+
+Create a `.env` file in the root directory with the following:
+
+```env
+DB_USER=your_postgres_user
+DB_HOST=localhost
+DB_NAME=secrets
+DB_PASSWORD=your_postgres_password
+DB_PORT=5432
+PORT=3000
+```
 
 ## Project Structure
 
@@ -58,9 +77,15 @@ secure-vault/
 │   ├── register.ejs
 │   ├── secrets.ejs
 │   └── submit.ejs
+├── .env
 ├── app.js
+├── schema.sql
 └── package.json
 ```
+
+## Database Schema
+
+Run the SQL commands in `schema.sql` to set up your database tables.
 
 ## License
 
