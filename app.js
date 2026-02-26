@@ -36,6 +36,50 @@ app.get('/register', function (req, res) {
   res.render('register');
 });
 
+app.get('/secrets', function (req, res) {
+  res.render('secrets');
+});
+
+app.post('/register', function (req, res) {
+  const username = req.body.username;
+  const password = req.body.password;
+
+  pool.query(
+    'INSERT INTO users (email, password) VALUES ($1, $2)',
+    [username, password],
+    function (err, result) {
+      if (err) {
+        console.error('Error registering user:', err);
+        res.status(500).send('Error registering user');
+      } else {
+        console.log('User registered successfully');
+        res.status(200).redirect('/login');
+      }
+    }
+  );
+});
+
+app.post('/login', function (req, res) {
+  const username = req.body.username;
+  const password = req.body.password;
+
+  pool.query(
+    'SELECT * FROM users WHERE email = $1 AND password = $2',
+    [username, password],
+    function (err, result) {
+      if (err) {
+        console.error('Error logging in:', err);
+        res.status(500).send('Error logging in');
+      } else if (result.rows.length === 0) {
+        res.status(401).send('Invalid username or password');
+      } else {
+        console.log('User logged in successfully');
+        res.status(200).redirect('/secrets');
+      }
+    }
+  );
+});
+
 app.listen(port, async function () {
   try {
     const result = await pool.query('SELECT NOW()');

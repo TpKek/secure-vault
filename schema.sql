@@ -1,5 +1,5 @@
 -- Create database (run this first if database doesn't exist)
--- CREATE DATABASE secrets_db;
+CREATE DATABASE secrets;
 
 -- Create users table
 CREATE TABLE IF NOT EXISTS users (
