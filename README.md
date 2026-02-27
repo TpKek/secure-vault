@@ -3,9 +3,12 @@
 A production-ready secure authentication application demonstrating enterprise-grade security practices, full-stack development skills, and modern web development patterns.
 
 ![License](https://img.shields.io/badge/license-ISC-blue.svg)
-![Node.js](https://img.shields.io/badge/Node.js-18%2B-green.svg)
-![Express.js](https://img.shields.io/badge/Express.js-4.x-brightgreen.svg)
-![PostgreSQL](https://img.shields.io/badge/PostgreSQL-14+-blue.svg)
+![Node.js](https://img.shields.io/badge/Node.js-18%2B-339933?style=flat&logo=node.js&logoColor=white)
+![Express.js](https://img.shields.io/badge/Express.js-4.x-000000?style=flat&logo=express&logoColor=white)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-14+-336791?style=flat&logo=postgresql&logoColor=white)
+![EJS](https://img.shields.io/badge/EJS-%23B4CA65?style=flat&logoColor=white)
+
+---
 
 ## 📋 Overview
 
@@ -13,10 +16,10 @@ A production-ready secure authentication application demonstrating enterprise-gr
 
 ### Key Highlights
 
-- 🔒 **Enterprise-Grade Authentication** - Passport.js with LocalStrategy for secure login
-- 🛡️ **Defense in Depth** - Multiple security layers including bcrypt hashing, rate limiting, and input validation
-- 📊 **Production Database** - PostgreSQL (Supabase) with connection pooling
-- ⚡ **Modern Stack** - Express.js, EJS templating, session-based authentication
+- 🔒 **Enterprise-Grade Authentication** — Passport.js with LocalStrategy for secure login
+- 🛡️ **Defense in Depth** — Multiple security layers including bcrypt hashing, rate limiting, and input validation
+- 📊 **Production Database** — PostgreSQL (Supabase) with connection pooling
+- ⚡ **Modern Stack** — Express.js, EJS templating, session-based authentication
 
 ---
 
@@ -40,22 +43,22 @@ This project demonstrates critical security best practices:
 
 ### Password Security
 - **bcrypt hashing** with 10 salt rounds for irreversible password storage
-- **Automatic salting** - identical passwords produce unique hashes
-- **Password validation** - length requirements and character validation
+- **Automatic salting** — identical passwords produce unique hashes
+- **Password validation** — length requirements and character validation
 
 ### Authentication & Sessions
-- **Passport.js LocalStrategy** - industry-standard authentication
+- **Passport.js LocalStrategy** — industry-standard authentication
 - **Secure session management** with express-session
 - **Session serialization/deserialization** for persistent login
 
 ### Rate Limiting & Protection
-- **General API rate limiting** - 100 requests per 15 minutes
-- **Strict login protection** - 5 failed attempts per 15 minutes
-- **Input validation** - email format and password strength requirements
+- **General API rate limiting** — 100 requests per 15 minutes
+- **Strict login protection** — 5 failed attempts per 15 minutes
+- **Input validation** — email format and password strength requirements
 
 ### Database Security
-- **Parameterized queries** - prevents SQL injection attacks
-- **Connection pooling** - efficient database resource management
+- **Parameterized queries** — prevents SQL injection attacks
+- **Connection pooling** — efficient database resource management
 
 ---
 
@@ -67,7 +70,7 @@ This project demonstrates critical security best practices:
 - PostgreSQL database (local or Supabase)
 - npm or yarn
 
-### Installation
+### Quick Start
 
 ```bash
 # Clone the repository
@@ -78,9 +81,20 @@ cd secure-vault
 
 # Install dependencies
 npm install
+
+# Configure environment
+cp .env.example .env
+# Edit .env with your database credentials
+
+# Start the server
+npm start
 ```
 
+The application will be available at `http://localhost:3000`
+
 ### Database Setup
+
+#### Option 1: Local PostgreSQL
 
 1. Create a PostgreSQL database named `secrets`
 2. Run the schema.sql file to create tables:
@@ -89,9 +103,12 @@ npm install
 psql -U your_user -d secrets -f schema.sql
 ```
 
-Or use Supabase:
-1. Create a Supabase project
-2. Run the SQL from schema.sql in the Supabase SQL editor
+#### Option 2: Supabase (Recommended)
+
+1. Create a Supabase project at [supabase.com](https://supabase.com)
+2. Navigate to the SQL editor in your Supabase dashboard
+3. Copy and execute the contents of `schema.sql`
+4. Copy your connection details from Supabase settings
 
 ### Environment Configuration
 
@@ -109,13 +126,7 @@ DB_PORT=5432
 SESSION_SECRET=your_secure_random_string_min_32_chars
 ```
 
-### Start the Server
-
-```bash
-npm start
-```
-
-The application will be available at `http://localhost:3000`
+> **Note:** Never commit your `.env` file to version control. It's already included in `.gitignore`.
 
 ---
 
@@ -131,15 +142,15 @@ secure-vault/
 │   │   ├── header.ejs          # Navigation and meta tags
 │   │   └── footer.ejs          # Footer content
 │   ├── home.ejs                # Landing page
-│   ├── login.ejs              # Login form
-│   ├── register.ejs           # Registration form
-│   ├── secrets.ejs            # Protected secrets page
-│   └── submit.ejs             # Submit secret form
-├── .env                       # Environment variables (not committed)
-├── .gitignore                 # Git ignore patterns
-├── app.js                     # Main application entry point
-├── schema.sql                 # Database schema
-└── package.json               # Dependencies and scripts
+│   ├── login.ejs               # Login form
+│   ├── register.ejs            # Registration form
+│   ├── secrets.ejs             # Protected secrets page
+│   └── submit.ejs              # Submit secret form
+├── .env                        # Environment variables (not committed)
+├── .gitignore                  # Git ignore patterns
+├── app.js                      # Main application entry point
+├── schema.sql                  # Database schema
+└── package.json                # Dependencies and scripts
 ```
 
 ---
@@ -153,7 +164,9 @@ secure-vault/
 | GET | `/register` | Registration form | No |
 | POST | `/register` | Create new user | No |
 | POST | `/login` | Authenticate user | No |
-| GET | `/secrets` | View secrets | Yes |
+| GET | `/secrets` | View all secrets | Yes |
+| GET | `/submit` | Submit secret form | Yes |
+| POST | `/submit` | Save a new secret | Yes |
 | GET | `/logout` | End session | Yes |
 
 ---
@@ -186,6 +199,14 @@ CREATE TABLE secrets (
 );
 ```
 
+### Session Configuration
+
+The application uses express-session with the following configuration:
+
+- **Cookie Settings**: `httpOnly: true`, `secure: false` (set to `true` in production with HTTPS)
+- **Session Duration**: Default session expiration
+- **Store**: Memory store (can be extended to Redis for production)
+
 ---
 
 ## 🌐 Deployment
@@ -197,6 +218,14 @@ CREATE TABLE secrets (
    - `DB_USER`, `DB_HOST`, `DB_NAME`, `DB_PASSWORD`, `DB_PORT`
    - `SESSION_SECRET`
 3. Deploy automatically on push to main branch
+
+### Production Considerations
+
+- Enable HTTPS in production
+- Use a session store like Redis for scaled deployments
+- Implement email verification for user registration
+- Add CSRF protection for forms
+- Consider implementing OAuth providers (Google, GitHub, etc.)
 
 ---
 
@@ -213,22 +242,31 @@ This project demonstrates understanding of:
 - ✅ PostgreSQL database design
 - ✅ RESTful API structure
 - ✅ Template rendering with EJS
+- ✅ Defense in depth security principles
 
 ---
 
 ## 👤 Author
 
 **Bertin Dreyer**
+
 - GitHub: [@TpKek](https://github.com/TpKek)
+- LinkedIn: [Bertin Dreyer](https://linkedin.com/in/bertin-dreyer)
 
 ---
 
 ## 📄 License
 
-ISC License - See LICENSE file for details
+ISC License — See LICENSE file for details
 
 ---
 
 ## 🤝 Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.
+
+---
+
+<div align="center">
+  <sub>Built with ❤️ using Node.js, Express, and PostgreSQL</sub>
+</div>
