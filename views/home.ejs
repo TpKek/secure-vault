@@ -1,47 +1,47 @@
 <%- include('partials/header') %>
 
-<div class="container" style="padding-top: 150px;">
-  <div class="text-center">
-    <div style="margin-bottom: 2rem;">
-      <i class="fas fa-shield-halved brand-icon" style="font-size: 5rem; color: var(--color-accent-primary);"></i>
+<main id="main-content" class="page-container">
+  <div class="container text-center">
+    <div class="mb-4">
+      <i class="fas fa-shield-halved brand-icon icon-3xl text-accent" aria-hidden="true"></i>
     </div>
 
-    <h1 style="margin-bottom: 1rem; background: linear-gradient(135deg, var(--color-text-primary) 0%, var(--color-accent-primary) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
+    <h1 class="mb-3 text-gradient">
       SECRETS VAULT
     </h1>
 
-    <p style="font-size: 1.25rem; color: var(--color-text-secondary); max-width: 600px; margin: 0 auto 2rem;">
+    <p class="text-xl text-secondary mb-4 max-width-md m-auto">
       Your secure authentication platform. Store and share your secrets with enterprise-grade security.
     </p>
 
-    <hr style="margin: 2rem auto; max-width: 300px;">
+    <hr class="hr--sm">
 
-    <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
-      <a href="/register" class="btn btn-gold" style="padding: 1rem 2.5rem; font-size: 1rem;">
-        <i class="fas fa-user-plus" style="margin-right: 0.5rem;"></i>
+    <div class="flex-center flex-wrap gap-md mb-5">
+      <a href="/register" class="btn btn-gold">
+        <i class="fas fa-user-plus" aria-hidden="true"></i>
         Create Account
       </a>
-      <a href="/login" class="btn btn-primary" style="padding: 1rem 2.5rem; font-size: 1rem;">
-        <i class="fas fa-sign-in-alt" style="margin-right: 0.5rem;"></i>
+      <a href="/login" class="btn btn-primary">
+        <i class="fas fa-sign-in-alt" aria-hidden="true"></i>
         Login
       </a>
     </div>
 
-    <div style="margin-top: 4rem; display: flex; justify-content: center; gap: 3rem; flex-wrap: wrap;">
-      <div style="text-align: center;">
-        <i class="fas fa-lock" style="font-size: 2rem; color: var(--color-accent-primary); margin-bottom: 0.5rem;"></i>
-        <p style="margin: 0; color: var(--color-text-muted);">Encrypted</p>
+    <div class="flex-center flex-wrap gap-xl mt-5">
+      <div class="feature-box">
+        <i class="fas fa-lock feature-box__icon icon-lg text-accent" aria-hidden="true"></i>
+        <p class="feature-box__text">Encrypted</p>
       </div>
-      <div style="text-align: center;">
-        <i class="fas fa-user-shield" style="font-size: 2rem; color: var(--color-gold-primary); margin-bottom: 0.5rem;"></i>
-        <p style="margin: 0; color: var(--color-text-muted);">Secure Auth</p>
+      <div class="feature-box">
+        <i class="fas fa-user-shield feature-box__icon icon-lg text-gold" aria-hidden="true"></i>
+        <p class="feature-box__text">Secure Auth</p>
       </div>
-      <div style="text-align: center;">
-        <i class="fas fa-database" style="font-size: 2rem; color: var(--color-accent-primary); margin-bottom: 0.5rem;"></i>
-        <p style="margin: 0; color: var(--color-text-muted);">PostgreSQL</p>
+      <div class="feature-box">
+        <i class="fas fa-database feature-box__icon icon-lg text-accent" aria-hidden="true"></i>
+        <p class="feature-box__text">PostgreSQL</p>
       </div>
     </div>
   </div>
-</div>
+</main>
 
 <%- include('partials/footer') %>

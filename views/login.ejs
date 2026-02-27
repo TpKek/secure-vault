@@ -1,52 +1,54 @@
 <%- include('partials/header') %>
 
-<div class="container" style="padding-top: 100px;">
-  <div class="row">
-    <div class="col-sm-8" style="margin: 0 auto; float: none;">
-      <div class="card">
-        <div class="card-body">
-          <div class="text-center" style="margin-bottom: 2rem;">
-            <i class="fas fa-sign-in-alt brand-icon" style="font-size: 3rem; color: var(--color-accent-primary); margin-bottom: 1rem;"></i>
-            <h1 style="margin-bottom: 0.5rem;">Welcome Back</h1>
-            <p style="color: var(--color-text-muted); margin: 0;">Login to access your vault </div>
-
-         </p>
-          <!-- Makes POST request to /login route -->
-          <form action="/login" method="POST">
-            <div class="form-group">
-              <label for="email">
-                <i class="fas fa-envelope" style="margin-right: 0.5rem; color: var(--color-accent-primary);"></i>
-                Email Address
-              </label>
-              <input type="email" class="form-control" name="username" placeholder="Enter your email" required autocomplete="email">
+<main id="main-content" class="page-container--sm">
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-8 m-auto">
+        <div class="card">
+          <div class="card-body">
+            <div class="text-center mb-4">
+              <i class="fas fa-sign-in-alt brand-icon icon-xl text-accent mb-2" aria-hidden="true"></i>
+              <h1 class="mb-1">Welcome Back</h1>
+              <p class="text-muted" style="margin: 0;">Login to access your vault</p>
             </div>
 
-            <div class="form-group">
-              <label for="password">
-                <i class="fas fa-lock" style="margin-right: 0.5rem; color: var(--color-accent-primary);"></i>
-                Password
-              </label>
-              <input type="password" class="form-control" name="password" placeholder="Enter your password" required autocomplete="current-password">
+            <!-- Makes POST request to /login route -->
+            <form action="/login" method="POST">
+              <div class="form-group">
+                <label for="email">
+                  <i class="fas fa-envelope form-icon" aria-hidden="true"></i>
+                  Email Address
+                </label>
+                <input type="email" class="form-control" id="email" name="username" placeholder="Enter your email…" required autocomplete="email">
+              </div>
+
+              <div class="form-group">
+                <label for="password">
+                  <i class="fas fa-lock form-icon" aria-hidden="true"></i>
+                  Password
+                </label>
+                <input type="password" class="form-control" id="password" name="password" placeholder="Enter your password…" required autocomplete="current-password">
+              </div>
+
+              <button type="submit" class="btn btn-primary w-100 p-3 mt-2">
+                <i class="fas fa-sign-in-alt" aria-hidden="true"></i>
+                Login
+              </button>
+            </form>
+
+            <div class="text-center mt-4">
+              <p class="text-muted" style="margin: 0;">
+                Don't have an account?
+                <a href="/register" class="text-gold" style="font-weight: 600;">
+                  Create one
+                </a>
+              </p>
             </div>
-
-            <button type="submit" class="btn btn-primary" style="width: 100%; padding: 1rem; margin-top: 1rem;">
-              <i class="fas fa-sign-in-alt" style="margin-right: 0.5rem;"></i>
-              Login
-            </button>
-          </form>
-
-          <div class="text-center" style="margin-top: 1.5rem;">
-            <p style="color: var(--color-text-muted); margin: 0;">
-              Don't have an account?
-              <a href="/register" style="color: var(--color-gold-primary); font-weight: 600;">
-                Create one
-              </a>
-            </p>
           </div>
         </div>
       </div>
     </div>
   </div>
-</div>
+</main>
 
 <%- include('partials/footer') %>

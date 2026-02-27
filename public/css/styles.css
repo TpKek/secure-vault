@@ -1,6 +1,5 @@
 /* ============================================
    Secrets Vault - Fintech Portfolio Theme
-   Matching Your Personal Website Style
    ============================================ */
 
 /* CSS Custom Properties */
@@ -24,7 +23,6 @@
   --color-accent-hover: #00a67d;
   --color-accent-glow: rgba(0, 200, 150, 0.15);
   --color-accent-600: #047857;
-  --color-accent-500: #00c896;
   --color-accent-400: #00dca6;
   --color-accent-300: #34d399;
   --color-accent-200: #6ee7b7;
@@ -114,6 +112,7 @@ body {
   background-color: var(--color-background);
   min-height: 100vh;
   overflow-x: hidden;
+  overflow-y: auto;
 }
 
 /* Scrollbar */
@@ -218,7 +217,7 @@ a:hover {
   background: var(--color-primary-800);
   border: 2px solid var(--color-border);
   border-radius: var(--radius-md);
-  transition: all var(--transition-base);
+  transition: border-color var(--transition-base), box-shadow var(--transition-base), background-color var(--transition-base);
 }
 
 .form-control:focus {
@@ -245,7 +244,7 @@ a:hover {
   border: none;
   border-radius: var(--radius-md);
   cursor: pointer;
-  transition: all var(--transition-base);
+  transition: transform var(--transition-base), box-shadow var(--transition-base), background-color var(--transition-base), border-color var(--transition-base);
 }
 
 .btn-primary {
@@ -359,7 +358,7 @@ hr {
   font-weight: 500;
   padding: var(--space-sm) var(--space-md);
   border-radius: var(--radius-sm);
-  transition: all var(--transition-fast);
+  transition: color var(--transition-fast), background-color var(--transition-fast);
 }
 
 .nav-links a:hover {
@@ -405,7 +404,6 @@ hr {
 .text-center { text-align: center; }
 .text-gold { color: var(--color-gold-primary); }
 .text-accent { color: var(--color-accent-primary); }
-.mt-5 { margin-top: var(--space-2xl); }
 .mb-3 { margin-bottom: var(--space-lg); }
 
 /* Row Layout */
@@ -422,18 +420,394 @@ hr {
 .col-sm-8 { flex: 0 0 66.666667%; max-width: 66.666667%; }
 .col-sm-4 { flex: 0 0 33.333333%; max-width: 33.333333%; }
 
-/* Responsive */
-@media (max-width: 768px) {
-  h1 { font-size: 2rem; }
-  h2 { font-size: 1.5rem; }
+/* Responsive - Small Tablet / Large Phone */
+@media (max-width: 576px) {
+  h1 { font-size: 1.875rem; }
+  h2 { font-size: 1.375rem; }
+  h3 { font-size: 1.125rem; }
 
-  .col-sm-8, .col-sm-4 {
-    flex: 0 0 100%;
-    max-width: 100%;
-    margin-bottom: var(--space-xl);
+  .container {
+    padding: 0 var(--space-md);
   }
 
   .card {
-    padding: var(--space-xl);
+    padding: var(--space-lg);
+    border-radius: var(--radius-lg);
   }
+
+  /* Feature boxes side by side but smaller */
+  .feature-box {
+    min-width: 45%;
+  }
+
+  .feature-box__icon {
+    font-size: 1.5rem;
+  }
+
+  /* Icon scaling */
+  .icon-xl { font-size: 2rem; }
+  .icon-2xl { font-size: 2.5rem; }
+  .icon-3xl { font-size: 3rem; }
+
+  /* Secrets card */
+  .secrets-card {
+    padding: var(--space-lg);
+  }
+}
+
+/* Responsive - Mobile */
+@media (max-width: 480px) {
+  h1 { font-size: 1.75rem; }
+  h2 { font-size: 1.25rem; }
+
+  .container {
+    padding: 0 var(--space-sm);
+  }
+
+  .card {
+    padding: var(--space-md);
+    border-radius: var(--radius-md);
+  }
+
+  /* Mobile Navigation */
+  .navbar {
+    flex-direction: column;
+    gap: var(--space-md);
+    padding: var(--space-md) 0;
+  }
+
+  .nav-links {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--space-sm);
+  }
+
+  .nav-links a {
+    padding: var(--space-sm);
+    font-size: 0.875rem;
+  }
+
+  /* Page containers */
+  .page-container--sm {
+    padding-top: var(--space-md);
+    padding-bottom: var(--space-md);
+  }
+
+  /* Form elements */
+  .form-control {
+    padding: var(--space-sm) var(--space-md);
+    font-size: 0.875rem;
+  }
+
+  .btn {
+    padding: var(--space-sm) var(--space-lg);
+    font-size: 0.875rem;
+  }
+
+  /* Utility adjustments */
+  .text-xl { font-size: 1rem; }
+  .text-2xl { font-size: 1.25rem; }
+  .icon-xl { font-size: 1.75rem; }
+  .icon-2xl { font-size: 2rem; }
+  .icon-3xl { font-size: 2.5rem; }
+}
+
+/* Responsive - Very Small Screens */
+@media (max-width: 360px) {
+  h1 { font-size: 1.5rem; }
+  h2 { font-size: 1.125rem; }
+  h3 { font-size: 1rem; }
+
+  .container {
+    padding: 0 var(--space-xs);
+  }
+
+  .card {
+    padding: var(--space-md);
+  }
+
+  .btn {
+    padding: var(--space-sm) var(--space-md);
+    width: 100%;
+    justify-content: center;
+  }
+
+  .flex-center {
+    flex-direction: column;
+  }
+
+  .gap-md {
+    gap: var(--space-sm);
+  }
+
+  .feature-box {
+    min-width: 100%;
+  }
+
+  /* Adjust spacing */
+  .mb-3, .mb-4, .mb-5 {
+    margin-bottom: var(--space-md);
+  }
+
+  .mt-4, .mt-5 {
+    margin-top: var(--space-md);
+  }
+
+  /* Hide skip link on very small screens */
+  .skip-link {
+    display: none;
+  }
+
+  /* Icon scaling for very small */
+  .brand-icon {
+    font-size: 1.5rem;
+  }
+
+  .icon-xl { font-size: 1.5rem; }
+  .icon-2xl { font-size: 1.75rem; }
+  .icon-3xl { font-size: 2rem; }
+
+  /* Secrets page */
+  .secrets-card {
+    padding: var(--space-md);
+  }
+
+  /* Form text */
+  .form-group label {
+    font-size: 0.75rem;
+  }
+
+  .form-group small {
+    font-size: 0.75rem;
+  }
+}
+
+/* Reduced Motion Support */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Print Styles */
+@media print {
+  .bg-gradient,
+  .navbar,
+  .btn,
+  .nav-links {
+    display: none !important;
+  }
+
+  body {
+    background: white;
+    color: black;
+  }
+
+  .card {
+    box-shadow: none;
+    border: 1px solid #ccc;
+    break-inside: avoid;
+  }
+
+  a {
+    color: black;
+    text-decoration: underline;
+  }
+}
+
+/* Accessibility: Skip Link */
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 0;
+  background: var(--color-accent-primary);
+  color: var(--color-primary-900);
+  padding: var(--space-sm) var(--space-md);
+  z-index: 1000;
+  transition: top var(--transition-fast);
+  font-weight: 600;
+  border-radius: 0 0 var(--radius-md) 0;
+}
+
+.skip-link:focus {
+  top: 0;
+  outline: 2px solid var(--color-gold-primary);
+  outline-offset: 2px;
+}
+
+/* Card Body */
+.card-body {
+  padding: var(--space-lg);
+}
+
+/* Page Layout Utilities */
+.page-container {
+  padding-top: var(--space-4xl);
+}
+
+.page-container--sm {
+  padding: var(--space-lg) 0;
+  min-height: calc(100vh - 60px);
+}
+
+/* Flex Utilities */
+.flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.flex-between {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.flex-wrap {
+  flex-wrap: wrap;
+}
+
+.gap-sm { gap: var(--space-sm); }
+.gap-md { gap: var(--space-md); }
+.gap-lg { gap: var(--space-lg); }
+.gap-xl { gap: var(--space-xl); }
+
+/* Spacing Utilities */
+.mt-1 { margin-top: var(--space-sm); }
+.mt-2 { margin-top: var(--space-md); }
+.mt-3 { margin-top: var(--space-lg); }
+.mt-4 { margin-top: var(--space-xl); }
+.mt-5 { margin-top: var(--space-2xl); }
+.mt-6 { margin-top: var(--space-3xl); }
+
+.mb-1 { margin-bottom: var(--space-sm); }
+.mb-2 { margin-bottom: var(--space-md); }
+.mb-3 { margin-bottom: var(--space-lg); }
+.mb-4 { margin-bottom: var(--space-xl); }
+.mb-5 { margin-bottom: var(--space-2xl); }
+
+.p-1 { padding: var(--space-sm); }
+.p-2 { padding: var(--space-md); }
+.p-3 { padding: var(--space-lg); }
+.p-4 { padding: var(--space-xl); }
+.p-5 { padding: var(--space-2xl); }
+
+/* Width Utilities */
+.w-100 { width: 100%; }
+
+/* Margin Auto */
+.m-auto { margin-left: auto; margin-right: auto; }
+
+/* Max Width Utilities */
+.max-width-sm { max-width: 400px; }
+.max-width-md { max-width: 600px; }
+.max-width-lg { max-width: 800px; }
+
+/* Responsive max-width */
+@media (max-width: 576px) {
+  .max-width-md { max-width: 100%; }
+  .max-width-sm { max-width: 100%; }
+}
+
+/* Icon Sizes */
+.icon-sm { font-size: 1rem; }
+.icon-md { font-size: 1.5rem; }
+.icon-lg { font-size: 2rem; }
+.icon-xl { font-size: 3rem; }
+.icon-2xl { font-size: 4rem; }
+.icon-3xl { font-size: 5rem; }
+
+/* Font Size Utilities */
+.text-sm { font-size: 0.875rem; }
+.text-base { font-size: 1rem; }
+.text-lg { font-size: 1.125rem; }
+.text-xl { font-size: 1.25rem; }
+.text-2xl { font-size: 1.5rem; }
+.text-3xl { font-size: 2rem; }
+
+/* Decorative Icons (for screen readers) */
+.icon-decorative {
+  aria-hidden: true;
+  speak: none;
+}
+
+/* Feature Box */
+.feature-box {
+  text-align: center;
+}
+
+.feature-box__icon {
+  font-size: 2rem;
+  margin-bottom: var(--space-sm);
+  display: block;
+}
+
+.feature-box__text {
+  margin: 0;
+  color: var(--color-text-muted);
+}
+
+/* Form Icon */
+.form-icon {
+  margin-right: 0.5rem;
+  color: var(--color-accent-primary);
+}
+
+.form-icon--gold {
+  color: var(--color-gold-primary);
+}
+
+/* Back Link */
+.back-link {
+  color: var(--color-text-muted);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.back-link:hover {
+  color: var(--color-accent-primary);
+}
+
+/* Secrets Page */
+.secrets-padding {
+  padding-top: 40px;
+}
+
+.secrets-card {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: var(--space-xl);
+}
+
+/* Text Gradient */
+.text-gradient {
+  background: linear-gradient(135deg, var(--color-text-primary) 0%, var(--color-accent-primary) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* HR Small */
+.hr--sm {
+  margin: var(--space-xl) auto;
+  max-width: 300px;
+}
+
+/* Text Secondary */
+.text-secondary {
+  color: var(--color-text-secondary);
+}
+
+.text-muted {
+  color: var(--color-text-muted);
+}
+
+.text-primary {
+  color: var(--color-text-primary);
 }
