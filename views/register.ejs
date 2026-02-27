@@ -1,41 +1,55 @@
 <%- include('partials/header') %>
-<div class="container mt-5">
-  <h1>Register</h1>
 
+<div class="container" style="padding-top: 100px;">
   <div class="row">
-    <div class="col-sm-8">
+    <div class="col-sm-8" style="margin: 0 auto; float: none;">
       <div class="card">
         <div class="card-body">
+          <div class="text-center" style="margin-bottom: 2rem;">
+            <i class="fas fa-user-plus brand-icon" style="font-size: 3rem; color: var(--color-gold-primary); margin-bottom: 1rem;"></i>
+            <h1 style="margin-bottom: 0.5rem;">Create Account</h1>
+            <p style="color: var(--color-text-muted); margin: 0;">Join the vault today</p>
+          </div>
 
           <!-- Makes POST request to /register route -->
           <form action="/register" method="POST">
             <div class="form-group">
-              <label for="email">Email</label>
-              <input type="email" class="form-control" name="username">
+              <label for="email">
+                <i class="fas fa-envelope" style="margin-right: 0.5rem; color: var(--color-gold-primary);"></i>
+                Email Address
+              </label>
+              <input type="email" class="form-control" name="username" placeholder="Enter your email" required autocomplete="email">
             </div>
+
             <div class="form-group">
-              <label for="password">Password</label>
-              <input type="password" class="form-control" name="password">
+              <label for="password">
+                <i class="fas fa-lock" style="margin-right: 0.5rem; color: var(--color-gold-primary);"></i>
+                Password
+              </label>
+              <input type="password" class="form-control" name="password" placeholder="Min 8 characters" required autocomplete="new-password">
+              <small style="color: var(--color-text-muted); display: block; margin-top: 0.5rem;">
+                Must be 8-20 characters with letters, numbers, and special characters
+              </small>
             </div>
-            <button type="submit" class="btn btn-dark">Register</button>
+
+            <button type="submit" class="btn btn-gold" style="width: 100%; padding: 1rem; margin-top: 1rem;">
+              <i class="fas fa-user-plus" style="margin-right: 0.5rem;"></i>
+              Create Account
+            </button>
           </form>
 
+          <div class="text-center" style="margin-top: 1.5rem;">
+            <p style="color: var(--color-text-muted); margin: 0;">
+              Already have an account?
+              <a href="/login" style="color: var(--color-accent-primary); font-weight: 600;">
+                Login here
+              </a>
+            </p>
+          </div>
         </div>
       </div>
     </div>
-
-    <!-- <div class="col-sm-4">
-      <div class="card social-block">
-        <div class="card-body">
-          <a class="btn btn-block" href="/auth/google" role="button">
-            <i class="fab fa-google"></i>
-            Sign Up with Google
-          </a>
-        </div>
-      </div>
-    </div> -->
-
   </div>
 </div>
 
-<%- include('partials/header') %>
+<%- include('partials/footer') %>

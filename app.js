@@ -244,7 +244,7 @@ app.post('/register', async function (req, res) {
     return res.status(400).send('Email already exists');
   }
 
-  //password strenght check
+  // Password Strength Check
   if (password.length < 8) {
     return res.status(400).send('Password must be at least 8 characters long');
   }
@@ -259,7 +259,7 @@ app.post('/register', async function (req, res) {
       .send('Password must only contain letters and numbers');
   }
 
-  //email regex check
+  // Email Regex Check
   if (
     !/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(
       username

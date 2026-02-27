@@ -1,15 +1,46 @@
 <%- include('partials/header') %>
 
+<div class="container" style="padding-top: 150px;">
+  <div class="text-center">
+    <div style="margin-bottom: 2rem;">
+      <i class="fas fa-shield-halved brand-icon" style="font-size: 5rem; color: var(--color-accent-primary);"></i>
+    </div>
 
-<div class="jumbotron centered">
-  <div class="container">
-    <i class="fas fa-key fa-6x"></i>
-    <h1 class="display-3">Secrets</h1>
-    <p class="lead">Don't keep your secrets, share them anonymously!</p>
-    <hr>
-    <a class="btn btn-light btn-lg" href="/register" role="button">Register</a>
-    <a class="btn btn-dark btn-lg" href="/login" role="button">Login</a>
+    <h1 style="margin-bottom: 1rem; background: linear-gradient(135deg, var(--color-text-primary) 0%, var(--color-accent-primary) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
+      SECRETS VAULT
+    </h1>
 
+    <p style="font-size: 1.25rem; color: var(--color-text-secondary); max-width: 600px; margin: 0 auto 2rem;">
+      Your secure authentication platform. Store and share your secrets with enterprise-grade security.
+    </p>
+
+    <hr style="margin: 2rem auto; max-width: 300px;">
+
+    <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+      <a href="/register" class="btn btn-gold" style="padding: 1rem 2.5rem; font-size: 1rem;">
+        <i class="fas fa-user-plus" style="margin-right: 0.5rem;"></i>
+        Create Account
+      </a>
+      <a href="/login" class="btn btn-primary" style="padding: 1rem 2.5rem; font-size: 1rem;">
+        <i class="fas fa-sign-in-alt" style="margin-right: 0.5rem;"></i>
+        Login
+      </a>
+    </div>
+
+    <div style="margin-top: 4rem; display: flex; justify-content: center; gap: 3rem; flex-wrap: wrap;">
+      <div style="text-align: center;">
+        <i class="fas fa-lock" style="font-size: 2rem; color: var(--color-accent-primary); margin-bottom: 0.5rem;"></i>
+        <p style="margin: 0; color: var(--color-text-muted);">Encrypted</p>
+      </div>
+      <div style="text-align: center;">
+        <i class="fas fa-user-shield" style="font-size: 2rem; color: var(--color-gold-primary); margin-bottom: 0.5rem;"></i>
+        <p style="margin: 0; color: var(--color-text-muted);">Secure Auth</p>
+      </div>
+      <div style="text-align: center;">
+        <i class="fas fa-database" style="font-size: 2rem; color: var(--color-accent-primary); margin-bottom: 0.5rem;"></i>
+        <p style="margin: 0; color: var(--color-text-muted);">PostgreSQL</p>
+      </div>
+    </div>
   </div>
 </div>
 
