@@ -39,6 +39,9 @@ import ejs from 'ejs';
 // Dotenv - loads secrets from .env file (keeps passwords out of code)
 import dotenv from 'dotenv';
 
+// Path - for resolving file paths
+import path from 'path';
+
 // Rate limiter - prevents spam attacks
 import rateLimit from 'express-rate-limit';
 
@@ -198,6 +201,7 @@ app.use(express.static("public"));
 
 // Use EJS for templates
 app.set("view engine", "ejs");
+app.set("views", path.join(process.cwd(), "views"));
 
 // Parse form data
 app.use(bodyParser.urlencoded({ extended: true }));
