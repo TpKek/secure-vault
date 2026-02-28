@@ -42,13 +42,7 @@ import dotenv from 'dotenv';
 // Rate limiter - prevents spam attacks
 import rateLimit from 'express-rate-limit';
 
-// Bcrypt - scrambles passwords so hackers can't read them
-import bcrypt from 'bcrypt';
-
-// JWT - creates tokens for authentication (the "golden ticket" system)
-import jwt from 'jsonwebtoken';
-
-// Supabase - cloud database
+// Supabase - cloud database and authentication
 import { createClient } from '@supabase/supabase-js';
 
 
@@ -62,6 +56,15 @@ const supabaseUrl = process.env.SUPABASE_URL;
 const supabaseKey = process.env.SUPABASE_ANON_KEY;
 
 const supabase = createClient(supabaseUrl, supabaseKey);
+
+// Supabase Auth - persist session in cookies
+supabase.auth.onAuthStateChange((event, session) => {
+  if (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') {
+    console.log('User signed in:', session?.user?.email);
+  } else if (event === 'SIGNED_OUT') {
+    console.log('User signed out');
+  }
+});
 
 
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -96,6 +99,8 @@ if (!supabaseUrl || !supabaseKey) {
 // ═══════════════════════════════════════════════════════════════════════════════
 
 // JWT settings - controls how our tokens work
+// Now handled by Supabase Auth - kept for reference
+/*
 const JWT_OPTIONS = {
   // The secret key used to sign tokens (like a wax seal - proves it's real!)
   secret: process.env.JWT_SECRET,
@@ -103,11 +108,16 @@ const JWT_OPTIONS = {
   // How long the token lasts (after this, user must log in again)
   expiresIn: '24h'
 };
+*/
 
 
 // ═══════════════════════════════════════════════════════════════════════════════
-// SECTION 6: JWT HELPER FUNCTIONS
+// SECTION 6: JWT HELPER FUNCTIONS (COMMENTED OUT - NOW USING SUPABASE AUTH)
 // ═══════════════════════════════════════════════════════════════════════════════
+
+/*
+// Supabase Auth handles token generation automatically!
+// These functions are kept for reference but no longer used
 
 /**
  * GENERATE TOKEN - Creates a new JWT token for a user
@@ -117,7 +127,7 @@ const JWT_OPTIONS = {
  *
  * @param {Object} user - The user object (we only store id and email)
  * @returns {string} The signed JWT token
- */
+ *
 function generateToken(user) {
   // We only put essential info in the token (never the password!)
   const payload = {
@@ -139,7 +149,7 @@ function generateToken(user) {
  *
  * @param {string} token - The JWT token to verify
  * @returns {Object|null} The decoded payload if valid, null if invalid
- */
+ *
 function verifyToken(token) {
   try {
     // jwt.verify checks the signature AND expiration
@@ -160,7 +170,7 @@ function verifyToken(token) {
  *
  * @param {Object} req - Express request object
  * @returns {string|null} The token or null if not found
- */
+ *
 function extractToken(req) {
   const authHeader = req.headers.authorization;
 
@@ -176,6 +186,7 @@ function extractToken(req) {
 
   return parts[1];
 }
+*/
 
 
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -196,50 +207,31 @@ app.use(express.json());
 
 
 // ═══════════════════════════════════════════════════════════════════════════════
-// SECTION 8: AUTHENTICATION MIDDLEWARE
+// SECTION 8: AUTHENTICATION MIDDLEWARE (NOW USING SUPABASE AUTH)
 // ═══════════════════════════════════════════════════════════════════════════════
 
 /**
  * CHECK AUTHENTICATED - The gatekeeper for protected routes
  *
- * This runs BEFORE any protected route (like /secrets)
- * It's like a bouncer checking your ID at the door
- *
- * Step 1: Do you have a ticket? (token in header)
- * Step 2: Is it real? (verify the signature)
- * Step 3: Has it expired? (check the date)
- * Step 4: If yes to all → Come on in! (set req.user and call next())
- * Step 5: If no → Go to login! (redirect)
+ * Now uses Supabase session instead of JWT tokens!
+ * Supabase handles the session cookie automatically
  */
-function checkAuthenticated(req, res, next) {
-  // Step 1: Get the token from request
-  const token = extractToken(req);
+async function checkAuthenticated(req, res, next) {
+  // Get the session from Supabase
+  const { data: { session }, error } = await supabase.auth.getSession();
 
-  // Step 2: No token? Not logged in!
-  if (!token) {
-    console.log("No token provided");
+  if (error || !session) {
+    console.log("No valid session");
     return res.redirect("/login");
   }
 
-  // Step 3: Verify the token
-  const payload = verifyToken(token);
-
-  // Step 4: Invalid or expired?
-  if (!payload) {
-    console.log("Token invalid or expired");
-    return res.redirect("/login");
-  }
-
-  // Step 5: Valid! Add user info to request
-  // Now the route knows WHO is asking
+  // Add user info to request from Supabase session
   req.user = {
-    id: payload.id,
-    email: payload.email
+    id: session.user.id,
+    email: session.user.email
   };
 
-  console.log("User authenticated:", payload.email);
-
-  // Step 6: Let them through to the protected page
+  console.log("User authenticated:", session.user.email);
   next();
 }
 
@@ -247,24 +239,17 @@ function checkAuthenticated(req, res, next) {
 /**
  * API VERSION - For AJAX/Fetch requests
  * Same as above but returns JSON instead of redirect
- * Used when frontend JavaScript makes the request
  */
-function checkAuthenticatedAPI(req, res, next) {
-  const token = extractToken(req);
+async function checkAuthenticatedAPI(req, res, next) {
+  const { data: { session }, error } = await supabase.auth.getSession();
 
-  if (!token) {
-    return res.status(401).json({ error: "No token provided" });
-  }
-
-  const payload = verifyToken(token);
-
-  if (!payload) {
-    return res.status(401).json({ error: "Invalid or expired token" });
+  if (error || !session) {
+    return res.status(401).json({ error: "No valid session" });
   }
 
   req.user = {
-    id: payload.id,
-    email: payload.email
+    id: session.user.id,
+    email: session.user.email
   };
 
   next();
@@ -404,8 +389,9 @@ app.get("/submit", checkAuthenticated, (req, res) => {
   res.render("submit");
 });
 
-// Logout - redirect home (client will clear the cookie)
-app.get("/logout", (req, res) => {
+// Logout - sign out from Supabase
+app.get("/logout", async (req, res) => {
+  await supabase.auth.signOut();
   res.redirect("/");
 });
 
@@ -414,16 +400,20 @@ app.get("/logout", (req, res) => {
 // POST ROUTES - Forms that send data
 // ═══════════════════════════════════════════════════════════════════════════════
 
-// Register - create new account
+// Register - create new account using Supabase Auth
 app.post("/register", async (req, res) => {
   const username = req.body.username?.trim();
   const password = req.body.password?.trim();
 
-  // Check if email already exists
-  const existingUser = await findUserByEmail(username);
+  if (!username || !password) {
+    return res.status(400).send("Please fill in all fields");
+  }
 
-  if (existingUser) {
-    return res.status(400).send("Email already exists! Try logging in.");
+  // Validate email format
+  const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+
+  if (!emailRegex.test(username)) {
+    return res.status(400).send("Please enter a valid email address");
   }
 
   // Validate password length
@@ -435,95 +425,60 @@ app.post("/register", async (req, res) => {
     return res.status(400).send("Password must be no more than 20 characters long");
   }
 
-  // Validate email format
-  const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
-
-  if (!emailRegex.test(username)) {
-    return res.status(400).send("Please enter a valid email address");
-  }
-
-  if (!username || !password) {
-    return res.status(400).send("Please fill in all fields");
-  }
-
-  // Hash the password - NEVER store plain text!
-  const hashedPassword = await bcrypt.hash(password, saltRounds);
-
-  // Save to database
+  // Register with Supabase Auth
   try {
-    const { data, error } = await supabase
-      .from("users")
-      .insert([{ email: username, password: hashedPassword }]);
+    const { data, error } = await supabase.auth.signUp({
+      email: username,
+      password: password
+    });
 
     if (error) {
-      throw error;
+      console.error("Registration error:", error.message);
+      return res.status(400).send("Error registering user: " + error.message);
     }
 
-    console.log("User registered successfully!");
+    console.log("User registered successfully!", username);
     res.redirect("/login");
   } catch (err) {
-    console.error("Error registering user:", err.message);
-    res.status(500).send("Error registering user. Email might already exist.");
+    console.error("Error registering user:", err);
+    res.status(500).send("Error registering user.");
   }
 });
 
 
-// LOGIN - The key part that creates the JWT token!
+// LOGIN - Using Supabase Auth!
 /**
  * LOGIN PROCESS - What happens when user clicks "Login":
  *
  * 1. User types email + password
- * 2. We find their account in database
- * 3. We check if password matches (using bcrypt)
- * 4. If correct → GENERATE JWT TOKEN (the golden ticket!)
- * 5. Send token to browser in a secure cookie
- * 6. Browser automatically sends cookie with every future request
- * 7. Server reads cookie → verifies token → knows who you are!
+ * 2. Supabase verifies the credentials
+ * 3. If correct → Supabase creates a session (handles JWT automatically!)
+ * 4. Session is stored in a secure cookie
+ * 5. Browser automatically sends cookie with every future request
  *
- * This is different from sessions because:
- * - Sessions: Server remembers you (needs memory!)
- * - JWT: You carry proof with you (server doesn't need to remember)
+ * Supabase handles all the JWT magic behind the scenes!
  */
 app.post("/login", async (req, res) => {
   try {
     const { username, password } = req.body;
 
-    // Step 1: Find user in database
-    const user = await findUserByEmail(username);
-
-    if (!user) {
-      return res.status(401).render("login", {
-        error: "No user found with that email"
-      });
-    }
-
-    // Step 2: Verify password against hash
-    const isValid = await verifyPassword(password, user.password);
-
-    if (!isValid) {
-      return res.status(401).render("login", {
-        error: "Incorrect password"
-      });
-    }
-
-    // Step 3: Generate JWT token - THIS IS THE KEY PART!
-    // Instead of creating a session, we make a portable token
-    const token = generateToken(user);
-
-    console.log("User logged in:", user.email);
-
-    // Step 4: Send token to browser in a secure cookie
-    // httpOnly: true = JavaScript can't read it (protects against XSS)
-    // secure: true = only sent over HTTPS
-    // sameSite: 'strict' = prevents CSRF attacks
-    res.cookie('token', token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'strict',
-      maxAge: 24 * 60 * 60 * 1000  // 24 hours
+    // Sign in with Supabase Auth
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email: username,
+      password: password
     });
 
-    // Step 5: Send to protected page
+    if (error) {
+      console.error("Login error:", error.message);
+      return res.status(401).render("login", {
+        error: error.message
+      });
+    }
+
+    console.log("User logged in:", username);
+
+    // Supabase handles session cookie automatically!
+    // Redirect to protected page
     res.redirect("/secrets");
 
   } catch (err) {
@@ -582,7 +537,7 @@ app.listen(port, async () => {
     console.log("==================================================");
     console.log("Running on: http://localhost:" + port);
     console.log("Connected to Supabase");
-    console.log("Authentication: JWT (Golden Ticket System)");
+    console.log("Authentication: Supabase Auth (managed)");
     console.log("EJS Templates: Enabled");
   }
 });
@@ -713,3 +668,4 @@ WHY THIS MATTERS FOR VERCEL:
    • Store JWT in httpOnly cookies, not localStorage
    • Keep your JWT_SECRET really secret!
 */
+
