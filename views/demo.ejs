@@ -2,18 +2,18 @@
 
 <!-- Mobile Navigation -->
 <nav class="mobile-nav">
-  <div class="mobile-nav-brand">
+  <a href="/" class="mobile-nav-brand">
     <i class="fas fa-shield-alt"></i>
     <span>SecureVault</span>
-  </div>
+  </a>
   <button class="hamburger" id="hamburger" aria-label="Toggle menu">
     <span></span>
     <span></span>
     <span></span>
   </button>
   <div class="mobile-nav-menu" id="mobile-nav-menu">
-    <a href="/">Home</a>
-    <a href="/demo">Demo</a>
+    <a href="#features">See How It Works</a>
+    <a href="#take-a-look">Take a Look</a>
     <a href="/login">Login</a>
     <a href="/register" class="btn-mobile-register">Get Started</a>
   </div>
@@ -177,7 +177,7 @@
   </section>
 
   <!-- Demo Preview -->
-  <section class="demo-board">
+  <section class="demo-board" id="take-a-look">
     <div class="container">
       <div class="demo-header" data-aos="fade-up">
         <span class="demo-label">Take a look</span>
@@ -377,6 +377,11 @@
   font-weight: 700;
   color: var(--hb-text);
   font-size: 1.125rem;
+  text-decoration: none;
+}
+
+.mobile-nav-brand:hover {
+  opacity: 0.9;
 }
 
 .mobile-nav-brand i {
@@ -387,13 +392,15 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-items: center;
   gap: 5px;
-  width: 32px;
-  height: 32px;
-  background: none;
-  border: none;
+  width: 40px;
+  height: 40px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--hb-border);
+  border-radius: 8px;
   cursor: pointer;
-  padding: 4px;
+  padding: 8px;
 }
 
 .hamburger span {
@@ -436,9 +443,16 @@
 .mobile-nav-menu a {
   color: var(--hb-text);
   text-decoration: none;
-  padding: 0.875rem 0;
+  padding: 0.9rem 0.5rem;
   font-size: 1rem;
   border-bottom: 1px solid var(--hb-border);
+  transition: all 0.2s ease;
+}
+
+.mobile-nav-menu a:hover {
+  background: rgba(34, 197, 94, 0.1);
+  color: var(--hb-accent);
+  padding-left: 1rem;
 }
 
 .mobile-nav-menu a:last-of-type {
