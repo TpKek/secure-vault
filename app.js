@@ -1,5 +1,5 @@
 // ╔══════════════════════════════════════════════════════════════════════════════╗
-// ║                        SECRETS APP - JWT VERSION                             ║
+// ║                        SECRETS APP - SUPABASE VERSION                             ║
 // ║                   A Secure Vault for Storing Your Secrets                    ║
 // ║                                                                                ║
 // ║  WHAT THIS APP DOES:                                                          ║
@@ -9,13 +9,13 @@
 // ║  • Uses Supabase as the database                                              ║
 // ║  • Uses JWT (JSON Web Tokens) for authentication                             ║
 // ║                                                                                ║
-// ║  HOW IT WORKS (JWT VERSION):                                                  ║
+// ║  HOW IT WORKS (SUPABASE VERSION):                                                  ║
 // ║  1. User signs up → password gets hashed → saved to database                  ║
 // ║  2. User logs in → password is checked against the hash                       ║
 // ║  3. If correct → user gets a JWT token (like a golden ticket they carry)     ║
 // ║  4. User can now access protected pages and submit secrets                    ║
 // ║                                                                                ║
-// ║  WHY JWT INSTEAD OF SESSIONS?                                                 ║
+// ║  WHY SUPABASE AUTH?                                                 ║
 // ║  • Sessions need server memory (doesn't work on serverless/Vercel)           ║
 // ║  • JWT is stateless - server just verifies, no memory needed                 ║
 // ║  • Perfect for Vercel deployment!                                             ║
