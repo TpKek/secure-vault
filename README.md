@@ -9,14 +9,15 @@ A production-ready secure authentication application demonstrating enterprise-gr
 | I want to... | Go to... |
 |--------------|----------|
 | Use the current Supabase version | [Getting Started](#-getting-started-supabase) |
-| Understand the old JWT version | [Custom JWT Version](#-custom-jwt-version-legacy) |
+| See the old JWT version | [Custom JWT Version](#-custom-jwt-version-legacy) |
+| See the original Passport.js version | [Passport.js Version](#-passportjs-original---removed) |
 | Learn about the migration | [Migration Journey](#-migration-journey) |
 | Deploy to Vercel | [Deployment](#-deployment) |
 | Learn key concepts | [Key Concepts](#-key-concepts-learned) |
 
 ---
 
-## 📊 Two Versions Overview
+## 📊 Three Versions Overview
 
 This project has **three authentication versions**:
 
