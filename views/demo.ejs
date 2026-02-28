@@ -1,0 +1,647 @@
+<%- include('partials/header') %>
+
+<main id="main-content">
+  <!-- Hero Section -->
+  <section class="demo-hero">
+    <div class="container text-center">
+      <div class="demo-badge">
+        <i class="fas fa-play-circle"></i>
+        Interactive Demo
+      </div>
+      <h1 class="demo-title">
+        See <span class="text-gradient">Secrets Vault</span> in Action
+      </h1>
+      <p class="demo-subtitle">
+        Explore enterprise-grade security features, JWT authentication, and secure secret management.
+      </p>
+      <div class="demo-actions">
+        <a href="/register" class="btn btn-gold">
+          <i class="fas fa-user-plus"></i>
+          Try It Now
+        </a>
+        <a href="#features" class="btn btn-outline">
+          <i class="fas fa-chevron-down"></i>
+          Explore Features
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Live Demo Section -->
+  <section class="demo-section" id="live-demo">
+    <div class="container">
+      <div class="section-header text-center">
+        <span class="section-tag">Live Preview</span>
+        <h2>Experience the Interface</h2>
+        <p>Interact with the demo components below to see the app in action.</p>
+      </div>
+
+      <div class="demo-grid">
+        <!-- Demo: Login Form -->
+        <div class="demo-card">
+          <div class="demo-card__header">
+            <i class="fas fa-sign-in-alt"></i>
+            <span>Secure Login</span>
+          </div>
+          <div class="demo-card__body">
+            <form class="demo-form" onsubmit="event.preventDefault();">
+              <div class="demo-form-group">
+                <label><i class="fas fa-envelope"></i> Email</label>
+                <input type="email" value="demo@secretsvault.app" disabled>
+              </div>
+              <div class="demo-form-group">
+                <label><i class="fas fa-lock"></i> Password</label>
+                <input type="password" value="••••••••••••" disabled>
+              </div>
+              <button class="btn btn-primary w-100" disabled>
+                <i class="fas fa-unlock"></i>
+                Login to Vault
+              </button>
+            </form>
+          </div>
+          <div class="demo-card__badge demo-card__badge--success">
+            <i class="fas fa-shield-alt"></i>
+            JWT Token Secured
+          </div>
+        </div>
+
+        <!-- Demo: Secret Submission -->
+        <div class="demo-card">
+          <div class="demo-card__header">
+            <i class="fas fa-paper-plane"></i>
+            <span>Anonymous Submission</span>
+          </div>
+          <div class="demo-card__body">
+            <form class="demo-form" onsubmit="event.preventDefault();">
+              <div class="demo-form-group">
+                <label><i class="fas fa-user-secret"></i> Your Secret</label>
+                <textarea disabled placeholder="Share your secret anonymously...">I've been learning full-stack development and just built my first authentication system! 🚀</textarea>
+              </div>
+              <button class="btn btn-accent w-100" disabled>
+                <i class="fas fa-paper-plane"></i>
+                Submit Secret
+              </button>
+            </form>
+          </div>
+          <div class="demo-card__badge demo-card__badge--info">
+            <i class="fas fa-user-secret"></i>
+            Anonymous Storage
+          </div>
+        </div>
+
+        <!-- Demo: Protected Vault -->
+        <div class="demo-card">
+          <div class="demo-card__header">
+            <i class="fas fa-vault"></i>
+            <span>Protected Vault</span>
+          </div>
+          <div class="demo-card__body">
+            <div class="demo-secrets">
+              <div class="demo-secret-item">
+                <i class="fas fa-lock"></i>
+                <p>I've been learning full-stack development and just built my first authentication system! 🚀</p>
+                <span class="demo-secret-date">Feb 28, 2026</span>
+              </div>
+              <div class="demo-secret-item">
+                <i class="fas fa-lock"></i>
+                <p>My secret recipe for the best chocolate chip cookies...</p>
+                <span class="demo-secret-date">Feb 15, 2026</span>
+              </div>
+              <div class="demo-secret-item">
+                <i class="fas fa-lock"></i>
+                <p>This app uses bcrypt with 10 salt rounds for password hashing!</p>
+                <span class="demo-secret-date">Jan 20, 2026</span>
+              </div>
+            </div>
+          </div>
+          <div class="demo-card__badge demo-card__badge--warning">
+            <i class="fas fa-encryption"></i>
+            AES Encrypted
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Security Features -->
+  <section class="demo-section demo-section--alt" id="features">
+    <div class="container">
+      <div class="section-header text-center">
+        <span class="section-tag">Security Features</span>
+        <h2>Enterprise-Grade Protection</h2>
+        <p>Every detail of this application is built with security in mind.</p>
+      </div>
+
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-card__icon">
+            <i class="fas fa-key"></i>
+          </div>
+          <h3>JWT Authentication</h3>
+          <p>Stateless token-based authentication perfect for serverless deployment. Tokens are stored in httpOnly cookies with secure flags.</p>
+          <div class="feature-card__code">
+            <code>24h token expiration</code>
+          </div>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-card__icon">
+            <i class="fas fa-lock"></i>
+          </div>
+          <h3>bcrypt Hashing</h3>
+          <p>Passwords are hashed with bcrypt using 10 salt rounds. Each password gets unique hashing even with identical inputs.</p>
+          <div class="feature-card__code">
+            <code>10 salt rounds</code>
+          </div>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-card__icon">
+            <i class="fas fa-tachometer-alt"></i>
+          </div>
+          <h3>Rate Limiting</h3>
+          <p>Prevents brute force attacks with intelligent rate limiting. Auth endpoints allow only 5 attempts per 15 minutes.</p>
+          <div class="feature-card__code">
+            <code>5 attempts / 15 min</code>
+          </div>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-card__icon">
+            <i class="fas fa-check-circle"></i>
+          </div>
+          <h3>Input Validation</h3>
+          <p>All user inputs are validated and sanitized. Email format validation and password strength requirements enforced.</p>
+          <div class="feature-card__code">
+            <code>SQL injection safe</code>
+          </div>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-card__icon">
+            <i class="fas fa-database"></i>
+          </div>
+          <h3>PostgreSQL Database</h3>
+          <p>Enterprise-grade database with parameterized queries. Supports both local PostgreSQL and Supabase cloud.</p>
+          <div class="feature-card__code">
+            <code>Supabase ready</code>
+          </div>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-card__icon">
+            <i class="fas fa-cloud"></i>
+          </div>
+          <h3>Vercel Deployment</h3>
+          <p>Serverless-ready architecture configured for Vercel deployment. Automatic scaling and global CDN.</p>
+          <div class="feature-card__code">
+            <code>Serverless ready</code>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Tech Stack -->
+  <section class="demo-section">
+    <div class="container">
+      <div class="section-header text-center">
+        <span class="section-tag">Technology</span>
+        <h2>Modern Full-Stack Architecture</h2>
+        <p>Built with industry-standard tools and best practices.</p>
+      </div>
+
+      <div class="tech-stack">
+        <div class="tech-item">
+          <i class="fab fa-node-js"></i>
+          <span>Node.js</span>
+        </div>
+        <div class="tech-item">
+          <i class="fab fa-js"></i>
+          <span>Express.js</span>
+        </div>
+        <div class="tech-item">
+          <i class="fas fa-database"></i>
+          <span>PostgreSQL</span>
+        </div>
+        <div class="tech-item">
+          <i class="fas fa-code"></i>
+          <span>EJS</span>
+        </div>
+        <div class="tech-item">
+          <i class="fab fa-aws"></i>
+          <span>JWT</span>
+        </div>
+        <div class="tech-item">
+          <i class="fas fa-shield-alt"></i>
+          <span>bcrypt</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="demo-cta">
+    <div class="container text-center">
+      <h2>Ready to Try It?</h2>
+      <p>Create an account and experience the secure vault yourself.</p>
+      <div class="demo-cta__actions">
+        <a href="/register" class="btn btn-gold btn-lg">
+          <i class="fas fa-user-plus"></i>
+          Create Free Account
+        </a>
+        <a href="/" class="btn btn-outline btn-lg">
+          <i class="fas fa-home"></i>
+          Back to Home
+        </a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<style>
+/* Demo Page Specific Styles */
+.demo-hero {
+  padding: 6rem 1rem 4rem;
+  background: linear-gradient(180deg, var(--color-primary-800) 0%, var(--color-primary-900) 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.demo-hero::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, var(--color-accent-glow) 0%, transparent 50%);
+  animation: rotate 20s linear infinite;
+}
+
+@keyframes rotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.demo-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--color-accent-glow);
+  border: 1px solid var(--color-accent-primary);
+  color: var(--color-accent-primary);
+  padding: 0.5rem 1rem;
+  border-radius: 2rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+  position: relative;
+}
+
+.demo-title {
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  font-weight: 700;
+  margin-bottom: 1rem;
+  position: relative;
+}
+
+.demo-subtitle {
+  font-size: 1.25rem;
+  color: var(--color-text-secondary);
+  max-width: 600px;
+  margin: 0 auto 2rem;
+  position: relative;
+}
+
+.demo-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  position: relative;
+}
+
+.demo-actions .btn-outline {
+  border: 2px solid var(--color-border-light);
+  color: var(--color-text-primary);
+  background: transparent;
+}
+
+.demo-actions .btn-outline:hover {
+  border-color: var(--color-accent-primary);
+  color: var(--color-accent-primary);
+}
+
+/* Demo Section */
+.demo-section {
+  padding: 5rem 1rem;
+}
+
+.demo-section--alt {
+  background: var(--color-primary-800);
+}
+
+.section-header {
+  margin-bottom: 3rem;
+}
+
+.section-tag {
+  display: inline-block;
+  background: var(--color-accent-glow);
+  color: var(--color-accent-primary);
+  padding: 0.25rem 0.75rem;
+  border-radius: 1rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.75rem;
+}
+
+.section-header h2 {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+.section-header p {
+  color: var(--color-text-secondary);
+}
+
+/* Demo Grid */
+.demo-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 2rem;
+}
+
+.demo-card {
+  background: var(--color-primary-700);
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  border: 1px solid var(--color-border);
+  transition: transform var(--transition-base), box-shadow var(--transition-base);
+}
+
+.demo-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-xl);
+}
+
+.demo-card__header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem 1.5rem;
+  background: var(--color-primary-600);
+  font-weight: 600;
+}
+
+.demo-card__header i {
+  color: var(--color-accent-primary);
+}
+
+.demo-card__body {
+  padding: 1.5rem;
+}
+
+.demo-card__badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.demo-card__badge--success {
+  background: rgba(0, 200, 150, 0.1);
+  color: var(--color-accent-primary);
+}
+
+.demo-card__badge--info {
+  background: rgba(59, 130, 246, 0.1);
+  color: #3b82f6;
+}
+
+.demo-card__badge--warning {
+  background: rgba(212, 168, 83, 0.1);
+  color: var(--color-gold-primary);
+}
+
+/* Demo Form */
+.demo-form .demo-form-group {
+  margin-bottom: 1rem;
+}
+
+.demo-form label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  color: var(--color-text-secondary);
+  margin-bottom: 0.5rem;
+}
+
+.demo-form input,
+.demo-form textarea {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  background: var(--color-primary-800);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  color: var(--color-text-primary);
+  font-size: 1rem;
+}
+
+.demo-form input:focus,
+.demo-form textarea:focus {
+  outline: none;
+  border-color: var(--color-accent-primary);
+}
+
+.demo-form textarea {
+  min-height: 100px;
+  resize: none;
+}
+
+/* Demo Secrets */
+.demo-secrets {
+  max-height: 250px;
+  overflow-y: auto;
+}
+
+.demo-secret-item {
+  padding: 1rem;
+  background: var(--color-primary-800);
+  border-radius: var(--radius-md);
+  margin-bottom: 0.75rem;
+  border-left: 3px solid var(--color-accent-primary);
+}
+
+.demo-secret-item:last-child {
+  margin-bottom: 0;
+}
+
+.demo-secret-item i {
+  color: var(--color-accent-primary);
+  margin-right: 0.5rem;
+}
+
+.demo-secret-item p {
+  margin: 0.5rem 0;
+  font-size: 0.9375rem;
+}
+
+.demo-secret-date {
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+}
+
+/* Features Grid */
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.feature-card {
+  background: var(--color-primary-700);
+  border-radius: var(--radius-xl);
+  padding: 2rem;
+  border: 1px solid var(--color-border);
+  transition: transform var(--transition-base);
+}
+
+.feature-card:hover {
+  transform: translateY(-2px);
+}
+
+.feature-card__icon {
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-accent-glow);
+  border-radius: var(--radius-md);
+  font-size: 1.25rem;
+  color: var(--color-accent-primary);
+  margin-bottom: 1rem;
+}
+
+.feature-card h3 {
+  font-size: 1.25rem;
+  margin-bottom: 0.75rem;
+}
+
+.feature-card p {
+  color: var(--color-text-secondary);
+  font-size: 0.9375rem;
+  line-height: 1.6;
+  margin-bottom: 1rem;
+}
+
+.feature-card__code {
+  display: inline-block;
+  background: var(--color-primary-800);
+  padding: 0.375rem 0.75rem;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  color: var(--color-accent-primary);
+}
+
+/* Tech Stack */
+.tech-stack {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 2rem;
+}
+
+.tech-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1.5rem 2rem;
+  background: var(--color-primary-700);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border);
+}
+
+.tech-item i {
+  font-size: 2rem;
+  color: var(--color-accent-primary);
+}
+
+.tech-item span {
+  font-size: 0.875rem;
+  color: var(--color-text-secondary);
+}
+
+/* CTA Section */
+.demo-cta {
+  padding: 5rem 1rem;
+  background: linear-gradient(180deg, var(--color-primary-900) 0%, var(--color-primary-800) 100%);
+  text-align: center;
+}
+
+.demo-cta h2 {
+  font-size: 2rem;
+  margin-bottom: 0.75rem;
+}
+
+.demo-cta p {
+  color: var(--color-text-secondary);
+  margin-bottom: 2rem;
+}
+
+.demo-cta__actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.btn-lg {
+  padding: 1rem 2rem;
+  font-size: 1.125rem;
+}
+
+.btn-accent {
+  background: var(--color-accent-primary);
+  color: var(--color-primary-900);
+}
+
+.btn-accent:hover {
+  background: var(--color-accent-hover);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .demo-hero {
+    padding: 4rem 1rem 3rem;
+  }
+
+  .demo-section {
+    padding: 3rem 1rem;
+  }
+
+  .demo-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .tech-stack {
+    gap: 1rem;
+  }
+
+  .tech-item {
+    padding: 1rem 1.5rem;
+  }
+}
+</style>
+
+<%- include('partials/footer') %>

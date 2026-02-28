@@ -356,6 +356,11 @@ app.get("/", (req, res) => {
   res.render("home");
 });
 
+// Demo page - interactive showcase of features
+app.get("/demo", (req, res) => {
+  res.render("demo");
+});
+
 // Login page - form for existing users
 app.get("/login", (req, res) => {
   res.render("login");
