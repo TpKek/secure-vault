@@ -1,647 +1,1316 @@
 <%- include('partials/header') %>
 
+<!-- Mobile Navigation -->
+<nav class="mobile-nav">
+  <div class="mobile-nav-brand">
+    <i class="fas fa-shield-alt"></i>
+    <span>SecureVault</span>
+  </div>
+  <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
+  <div class="mobile-nav-menu" id="mobile-nav-menu">
+    <a href="/">Home</a>
+    <a href="/demo">Demo</a>
+    <a href="/login">Login</a>
+    <a href="/register" class="btn-mobile-register">Get Started</a>
+  </div>
+</nav>
+
 <main id="main-content">
   <!-- Hero Section -->
-  <section class="demo-hero">
-    <div class="container text-center">
-      <div class="demo-badge">
-        <i class="fas fa-play-circle"></i>
-        Interactive Demo
-      </div>
-      <h1 class="demo-title">
-        See <span class="text-gradient">Secrets Vault</span> in Action
-      </h1>
-      <p class="demo-subtitle">
-        Explore enterprise-grade security features, JWT authentication, and secure secret management.
-      </p>
-      <div class="demo-actions">
-        <a href="/register" class="btn btn-gold">
-          <i class="fas fa-user-plus"></i>
-          Try It Now
-        </a>
-        <a href="#features" class="btn btn-outline">
-          <i class="fas fa-chevron-down"></i>
-          Explore Features
-        </a>
-      </div>
+  <section class="hero-board">
+    <div class="hero-bg">
+      <div class="grid-pattern"></div>
+      <div class="glow glow-1"></div>
+      <div class="glow glow-2"></div>
     </div>
-  </section>
-
-  <!-- Live Demo Section -->
-  <section class="demo-section" id="live-demo">
     <div class="container">
-      <div class="section-header text-center">
-        <span class="section-tag">Live Preview</span>
-        <h2>Experience the Interface</h2>
-        <p>Interact with the demo components below to see the app in action.</p>
-      </div>
-
-      <div class="demo-grid">
-        <!-- Demo: Login Form -->
-        <div class="demo-card">
-          <div class="demo-card__header">
-            <i class="fas fa-sign-in-alt"></i>
-            <span>Secure Login</span>
-          </div>
-          <div class="demo-card__body">
-            <form class="demo-form" onsubmit="event.preventDefault();">
-              <div class="demo-form-group">
-                <label><i class="fas fa-envelope"></i> Email</label>
-                <input type="email" value="demo@secretsvault.app" disabled>
-              </div>
-              <div class="demo-form-group">
-                <label><i class="fas fa-lock"></i> Password</label>
-                <input type="password" value="••••••••••••" disabled>
-              </div>
-              <button class="btn btn-primary w-100" disabled>
-                <i class="fas fa-unlock"></i>
-                Login to Vault
-              </button>
-            </form>
-          </div>
-          <div class="demo-card__badge demo-card__badge--success">
-            <i class="fas fa-shield-alt"></i>
-            JWT Token Secured
-          </div>
+      <div class="hero-inner">
+        <div class="hero-badge-board">
+          <span class="pulse-dot"></span>
+          Live Demo
         </div>
-
-        <!-- Demo: Secret Submission -->
-        <div class="demo-card">
-          <div class="demo-card__header">
-            <i class="fas fa-paper-plane"></i>
-            <span>Anonymous Submission</span>
-          </div>
-          <div class="demo-card__body">
-            <form class="demo-form" onsubmit="event.preventDefault();">
-              <div class="demo-form-group">
-                <label><i class="fas fa-user-secret"></i> Your Secret</label>
-                <textarea disabled placeholder="Share your secret anonymously...">I've been learning full-stack development and just built my first authentication system! 🚀</textarea>
-              </div>
-              <button class="btn btn-accent w-100" disabled>
-                <i class="fas fa-paper-plane"></i>
-                Submit Secret
-              </button>
-            </form>
-          </div>
-          <div class="demo-card__badge demo-card__badge--info">
-            <i class="fas fa-user-secret"></i>
-            Anonymous Storage
-          </div>
+        <h1 class="hero-heading">
+          <span class="brand-name">SecureVault</span>
+          <span class="brand-tagline">Built for developers who care about security</span>
+        </h1>
+        <p class="hero-text">
+          I built this authentication system to learn full-stack development and
+          demonstrate production-ready security patterns. It's been used by friends
+          and side projects — now I'm sharing it with you.
+        </p>
+        <div class="hero-ctas">
+          <a href="/register" class="btn-board-primary">
+            <span>Try it out</span>
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </a>
+          <a href="#features" class="btn-board-secondary">
+            See how it works
+          </a>
         </div>
-
-        <!-- Demo: Protected Vault -->
-        <div class="demo-card">
-          <div class="demo-card__header">
-            <i class="fas fa-vault"></i>
-            <span>Protected Vault</span>
+        <div class="hero-metrics">
+          <div class="metric">
+            <span class="metric-num">JWT</span>
+            <span class="metric-label">Auth</span>
           </div>
-          <div class="demo-card__body">
-            <div class="demo-secrets">
-              <div class="demo-secret-item">
-                <i class="fas fa-lock"></i>
-                <p>I've been learning full-stack development and just built my first authentication system! 🚀</p>
-                <span class="demo-secret-date">Feb 28, 2026</span>
-              </div>
-              <div class="demo-secret-item">
-                <i class="fas fa-lock"></i>
-                <p>My secret recipe for the best chocolate chip cookies...</p>
-                <span class="demo-secret-date">Feb 15, 2026</span>
-              </div>
-              <div class="demo-secret-item">
-                <i class="fas fa-lock"></i>
-                <p>This app uses bcrypt with 10 salt rounds for password hashing!</p>
-                <span class="demo-secret-date">Jan 20, 2026</span>
-              </div>
-            </div>
+          <div class="metric-divider"></div>
+          <div class="metric">
+            <span class="metric-num">bcrypt</span>
+            <span class="metric-label">Hashing</span>
           </div>
-          <div class="demo-card__badge demo-card__badge--warning">
-            <i class="fas fa-encryption"></i>
-            AES Encrypted
+          <div class="metric-divider"></div>
+          <div class="metric">
+            <span class="metric-num">Supabase</span>
+            <span class="metric-label">Database</span>
           </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Security Features -->
-  <section class="demo-section demo-section--alt" id="features">
+  <!-- The Journey Section -->
+  <section class="story-section">
     <div class="container">
-      <div class="section-header text-center">
-        <span class="section-tag">Security Features</span>
-        <h2>Enterprise-Grade Protection</h2>
-        <p>Every detail of this application is built with security in mind.</p>
+      <div class="story-content" data-aos="fade-up">
+        <div class="story-label">The journey</div>
+        <h2 class="story-title">From Passport.js to Supabase</h2>
+        <p class="story-text">
+          I started building auth with <strong>Passport.js</strong> and express sessions — the classic
+          approach. It worked locally, but when I tried deploying to <strong>Vercel</strong>, sessions
+          kept breaking. Serverless functions don't store session data between requests.
+        </p>
+        <p class="story-text">
+          That's when I discovered <strong>JWT tokens</strong>. Instead of storing user sessions on the server,
+          the server sends the user a signed token. Every request includes that token, and the server
+          just verifies it. No memory needed. No session store needed.
+        </p>
+        <p class="story-text">
+          Then I moved from local PostgreSQL to <strong>Supabase</strong> — a cloud backend that handles
+          authentication AND gives me a PostgreSQL database. It's like having a auth service built-in.
+          Now the app can deploy anywhere, scale to infinity, and costs almost nothing to run.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features -->
+  <section class="features-board" id="features">
+    <div class="container">
+      <div class="features-header" data-aos="fade-up">
+        <span class="features-label">What's under the hood</span>
+        <h2 class="features-title">What the app actually does</h2>
       </div>
 
       <div class="features-grid">
-        <div class="feature-card">
-          <div class="feature-card__icon">
-            <i class="fas fa-key"></i>
+        <div class="feature-card-board" data-aos="fade-up" data-aos-delay="100">
+          <div class="feature-icon-board">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+            </svg>
           </div>
-          <h3>JWT Authentication</h3>
-          <p>Stateless token-based authentication perfect for serverless deployment. Tokens are stored in httpOnly cookies with secure flags.</p>
-          <div class="feature-card__code">
-            <code>24h token expiration</code>
-          </div>
+          <h3>Supabase Auth</h3>
+          <p>Cloud-based authentication with built-in user management. Handles signup, login, logout, and password reset out of the box.</p>
         </div>
 
-        <div class="feature-card">
-          <div class="feature-card__icon">
-            <i class="fas fa-lock"></i>
+        <div class="feature-card-board" data-aos="fade-up" data-aos-delay="150">
+          <div class="feature-icon-board">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+              <path d="M2 17l10 5 10-5"/>
+              <path d="M2 12l10 5 10-5"/>
+            </svg>
+          </div>
+          <h3>JWT Tokens</h3>
+          <p>Stateless authentication with JSON Web Tokens. 24-hour expiration stored in httpOnly cookies. No server session memory needed.</p>
+        </div>
+
+        <div class="feature-card-board" data-aos="fade-up" data-aos-delay="200">
+          <div class="feature-icon-board">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+              <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+            </svg>
           </div>
           <h3>bcrypt Hashing</h3>
-          <p>Passwords are hashed with bcrypt using 10 salt rounds. Each password gets unique hashing even with identical inputs.</p>
-          <div class="feature-card__code">
-            <code>10 salt rounds</code>
-          </div>
+          <p>Passwords hashed with 10 salt rounds. Even if the database leaks, passwords can't be reversed. Each hash is unique even for same password.</p>
         </div>
 
-        <div class="feature-card">
-          <div class="feature-card__icon">
-            <i class="fas fa-tachometer-alt"></i>
+        <div class="feature-card-board" data-aos="fade-up" data-aos-delay="250">
+          <div class="feature-icon-board">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+            </svg>
           </div>
           <h3>Rate Limiting</h3>
-          <p>Prevents brute force attacks with intelligent rate limiting. Auth endpoints allow only 5 attempts per 15 minutes.</p>
-          <div class="feature-card__code">
-            <code>5 attempts / 15 min</code>
-          </div>
+          <p>5 login attempts per 15 minutes per IP. Protects against brute force attacks while staying usable for real users.</p>
         </div>
 
-        <div class="feature-card">
-          <div class="feature-card__icon">
-            <i class="fas fa-check-circle"></i>
+        <div class="feature-card-board" data-aos="fade-up" data-aos-delay="300">
+          <div class="feature-icon-board">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+              <path d="M9 12l2 2 4-4"/>
+            </svg>
           </div>
-          <h3>Input Validation</h3>
-          <p>All user inputs are validated and sanitized. Email format validation and password strength requirements enforced.</p>
-          <div class="feature-card__code">
-            <code>SQL injection safe</code>
-          </div>
+          <h3>SQL Injection Protection</h3>
+          <p>Parameterized queries for all database operations. User input never goes directly into SQL strings.</p>
         </div>
 
-        <div class="feature-card">
-          <div class="feature-card__icon">
-            <i class="fas fa-database"></i>
-          </div>
-          <h3>PostgreSQL Database</h3>
-          <p>Enterprise-grade database with parameterized queries. Supports both local PostgreSQL and Supabase cloud.</p>
-          <div class="feature-card__code">
-            <code>Supabase ready</code>
-          </div>
-        </div>
-
-        <div class="feature-card">
-          <div class="feature-card__icon">
-            <i class="fas fa-cloud"></i>
+        <div class="feature-card-board" data-aos="fade-up" data-aos-delay="350">
+          <div class="feature-icon-board">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="2" y="3" width="20" height="14" rx="2" ry="2"/>
+              <line x1="8" y1="21" x2="16" y2="21"/>
+              <line x1="12" y1="17" x2="12" y2="21"/>
+            </svg>
           </div>
           <h3>Vercel Deployment</h3>
-          <p>Serverless-ready architecture configured for Vercel deployment. Automatic scaling and global CDN.</p>
-          <div class="feature-card__code">
-            <code>Serverless ready</code>
-          </div>
+          <p>Serverless-ready architecture. Auto-scales to handle any traffic. Global CDN for fast load times worldwide.</p>
         </div>
       </div>
+    </div>
+  </section>
+
+  <!-- Demo Preview -->
+  <section class="demo-board">
+    <div class="container">
+      <div class="demo-header" data-aos="fade-up">
+        <span class="demo-label">Take a look</span>
+        <h2 class="demo-title">The full user journey</h2>
+        <p class="demo-subtitle">From creating an account to viewing your protected secrets.</p>
+      </div>
+
+      <!-- App Flow Visualization -->
+      <div class="app-flow" data-aos="fade-up">
+
+        <!-- Register Box -->
+        <div class="flow-box">
+          <div class="flow-label">Step 1: Register</div>
+          <div class="app-card">
+            <div class="app-card-header">
+              <i class="fas fa-user-plus text-gold"></i>
+              <span>Create Account</span>
+            </div>
+            <div class="app-card-body">
+              <div class="app-field">
+                <label><i class="fas fa-envelope"></i> Email</label>
+                <input type="text" value="you@example.com" disabled>
+              </div>
+              <div class="app-field">
+                <label><i class="fas fa-lock"></i> Password</label>
+                <input type="password" value="••••••••" disabled>
+              </div>
+              <button class="app-btn app-btn-gold">Create Account</button>
+            </div>
+            <div class="app-card-footer">
+              <span>Already have one? <a href="#">Login</a></span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Arrow 1 -->
+        <div class="flow-arrow">
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M5 12h14M12 5l7 7-7 7"/>
+          </svg>
+        </div>
+
+        <!-- Login Box -->
+        <div class="flow-box">
+          <div class="flow-label">Step 2: Login</div>
+          <div class="app-card">
+            <div class="app-card-header">
+              <i class="fas fa-sign-in-alt text-accent-flow"></i>
+              <span>Welcome Back</span>
+            </div>
+            <div class="app-card-body">
+              <div class="app-field">
+                <label><i class="fas fa-envelope"></i> Email</label>
+                <input type="text" value="you@example.com" disabled>
+              </div>
+              <div class="app-field">
+                <label><i class="fas fa-lock"></i> Password</label>
+                <input type="password" value="••••••••" disabled>
+              </div>
+              <button class="app-btn app-btn-accent">Login</button>
+            </div>
+            <div class="app-card-footer">
+              <span>Don't have an account? <a href="#">Create one</a></span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Arrow 2 -->
+        <div class="flow-arrow">
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M5 12h14M12 5l7 7-7 7"/>
+          </svg>
+        </div>
+
+        <!-- Secrets Box -->
+        <div class="flow-box">
+          <div class="flow-label">Step 3: View Secrets</div>
+          <div class="app-card app-card-secrets">
+            <div class="app-card-header-secrets">
+              <i class="fas fa-shield-check text-accent-flow"></i>
+              <span>Access Granted</span>
+              <span class="jwt-badge">JWT</span>
+            </div>
+            <div class="app-card-body-secrets">
+              <div class="secret-preview">
+                <i class="fas fa-user-secret"></i>
+                <p>My secret recipe for chocolate chip cookies...</p>
+                <span>Dec 15, 2025</span>
+              </div>
+              <div class="secret-preview">
+                <i class="fas fa-user-secret"></i>
+                <p>API keys for the production server...</p>
+                <span>Dec 10, 2025</span>
+              </div>
+            </div>
+            <div class="app-card-footer-secrets">
+              <button class="app-btn-small app-btn-dark">Logout</button>
+              <button class="app-btn-small app-btn-accent">Submit New</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <p class="flow-note" data-aos="fade-up">
+        Each step is protected — users can only see their own secrets. The JWT token in your cookie proves who you are.
+      </p>
     </div>
   </section>
 
   <!-- Tech Stack -->
-  <section class="demo-section">
+  <section class="tech-board">
     <div class="container">
-      <div class="section-header text-center">
-        <span class="section-tag">Technology</span>
-        <h2>Modern Full-Stack Architecture</h2>
-        <p>Built with industry-standard tools and best practices.</p>
+      <div class="tech-header" data-aos="fade-up">
+        <span class="tech-label">The tools I used</span>
+        <h2 class="tech-title">Built with modern stuff</h2>
       </div>
-
-      <div class="tech-stack">
-        <div class="tech-item">
-          <i class="fab fa-node-js"></i>
-          <span>Node.js</span>
-        </div>
-        <div class="tech-item">
-          <i class="fab fa-js"></i>
-          <span>Express.js</span>
-        </div>
-        <div class="tech-item">
-          <i class="fas fa-database"></i>
-          <span>PostgreSQL</span>
-        </div>
-        <div class="tech-item">
-          <i class="fas fa-code"></i>
-          <span>EJS</span>
-        </div>
-        <div class="tech-item">
-          <i class="fab fa-aws"></i>
-          <span>JWT</span>
-        </div>
-        <div class="tech-item">
-          <i class="fas fa-shield-alt"></i>
-          <span>bcrypt</span>
-        </div>
+      <div class="tech-tags">
+        <span class="tech-tag" data-aos="fade-up" data-aos-delay="100">Node.js</span>
+        <span class="tech-tag" data-aos="fade-up" data-aos-delay="150">Express</span>
+        <span class="tech-tag" data-aos="fade-up" data-aos-delay="200">PostgreSQL</span>
+        <span class="tech-tag" data-aos="fade-up" data-aos-delay="250">JWT</span>
+        <span class="tech-tag" data-aos="fade-up" data-aos-delay="300">bcrypt</span>
+        <span class="tech-tag" data-aos="fade-up" data-aos-delay="350">EJS</span>
+        <span class="tech-tag" data-aos="fade-up" data-aos-delay="400">Vercel</span>
+        <span class="tech-tag" data-aos="fade-up" data-aos-delay="450">Supabase</span>
       </div>
     </div>
   </section>
 
-  <!-- CTA Section -->
-  <section class="demo-cta">
-    <div class="container text-center">
-      <h2>Ready to Try It?</h2>
-      <p>Create an account and experience the secure vault yourself.</p>
-      <div class="demo-cta__actions">
-        <a href="/register" class="btn btn-gold btn-lg">
-          <i class="fas fa-user-plus"></i>
-          Create Free Account
-        </a>
-        <a href="/" class="btn btn-outline btn-lg">
-          <i class="fas fa-home"></i>
-          Back to Home
-        </a>
+  <!-- CTA -->
+  <section class="cta-board">
+    <div class="container">
+      <div class="cta-box" data-aos="zoom-in">
+        <h2>Want to try it?</h2>
+        <p>Create an account and see the whole thing in action. No strings attached.</p>
+        <div class="cta-actions">
+          <a href="/register" class="btn-cta-board">
+            Start for free
+          </a>
+          <a href="/" class="btn-cta-outline">
+            Go back home
+          </a>
+        </div>
       </div>
     </div>
   </section>
 </main>
 
 <style>
-/* Demo Page Specific Styles */
-.demo-hero {
-  padding: 6rem 1rem 4rem;
-  background: linear-gradient(180deg, var(--color-primary-800) 0%, var(--color-primary-900) 100%);
+/* ============================================
+   Human-Touched Demo Page Styles
+   ============================================ */
+
+:root {
+  --hb-bg: #0c0e14;
+  --hb-bg-alt: #131820;
+  --hb-bg-card: #1a1f2b;
+  --hb-accent: #22c55e;
+  --hb-accent-dim: rgba(34, 197, 94, 0.15);
+  --hb-text: #f1f5f9;
+  --hb-text-muted: #94a3b8;
+  --hb-border: #2d3548;
+  --hb-glow: rgba(34, 197, 94, 0.3);
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+/* Mobile Navigation */
+.mobile-nav {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  background: rgba(12, 14, 20, 0.95);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--hb-border);
+  padding: 0.75rem 1rem;
+}
+
+.mobile-nav-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 700;
+  color: var(--hb-text);
+  font-size: 1.125rem;
+}
+
+.mobile-nav-brand i {
+  color: var(--hb-accent);
+}
+
+.hamburger {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 32px;
+  height: 32px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+}
+
+.hamburger span {
+  display: block;
+  width: 100%;
+  height: 2px;
+  background: var(--hb-text);
+  border-radius: 2px;
+  transition: all 0.3s ease;
+}
+
+.hamburger.active span:nth-child(1) {
+  transform: rotate(45deg) translate(5px, 5px);
+}
+
+.hamburger.active span:nth-child(2) {
+  opacity: 0;
+}
+
+.hamburger.active span:nth-child(3) {
+  transform: rotate(-45deg) translate(5px, -5px);
+}
+
+.mobile-nav-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: rgba(12, 14, 20, 0.98);
+  border-bottom: 1px solid var(--hb-border);
+  display: none;
+  flex-direction: column;
+  padding: 1rem;
+}
+
+.mobile-nav-menu.active {
+  display: flex;
+}
+
+.mobile-nav-menu a {
+  color: var(--hb-text);
+  text-decoration: none;
+  padding: 0.875rem 0;
+  font-size: 1rem;
+  border-bottom: 1px solid var(--hb-border);
+}
+
+.mobile-nav-menu a:last-of-type {
+  border-bottom: none;
+}
+
+.btn-mobile-register {
+  background: var(--hb-accent);
+  color: #000 !important;
+  text-align: center;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  margin-top: 0.5rem;
+  border: none !important;
+}
+
+@media (max-width: 768px) {
+  .mobile-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .hero-board {
+    padding-top: 5rem;
+  }
+}
+
+/* Hero */
+.hero-board {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
   position: relative;
   overflow: hidden;
+  padding: 5rem 0;
 }
 
-.demo-hero::before {
-  content: '';
+.hero-bg {
   position: absolute;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
-  background: radial-gradient(circle, var(--color-accent-glow) 0%, transparent 50%);
-  animation: rotate 20s linear infinite;
+  inset: 0;
+  background: var(--hb-bg);
 }
 
-@keyframes rotate {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+.grid-pattern {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(34, 197, 94, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(34, 197, 94, 0.03) 1px, transparent 1px);
+  background-size: 60px 60px;
 }
 
-.demo-badge {
+.glow {
+  position: absolute;
+  width: 600px;
+  height: 600px;
+  border-radius: 50%;
+  filter: blur(120px);
+  opacity: 0.4;
+}
+
+.glow-1 {
+  background: var(--hb-accent);
+  top: -200px;
+  right: -100px;
+}
+
+.glow-2 {
+  background: #8b5cf6;
+  bottom: -200px;
+  left: -100px;
+}
+
+.hero-inner {
+  position: relative;
+  z-index: 1;
+  max-width: 680px;
+}
+
+.hero-badge-board {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  background: var(--color-accent-glow);
-  border: 1px solid var(--color-accent-primary);
-  color: var(--color-accent-primary);
-  padding: 0.5rem 1rem;
+  background: var(--hb-accent-dim);
+  border: 1px solid rgba(34, 197, 94, 0.3);
+  color: var(--hb-accent);
+  padding: 0.4rem 0.9rem;
   border-radius: 2rem;
-  font-size: 0.875rem;
-  font-weight: 600;
+  font-size: 0.8rem;
+  font-weight: 500;
   margin-bottom: 1.5rem;
-  position: relative;
 }
 
-.demo-title {
-  font-size: clamp(2rem, 5vw, 3.5rem);
-  font-weight: 700;
-  margin-bottom: 1rem;
-  position: relative;
+.pulse-dot {
+  width: 6px;
+  height: 6px;
+  background: var(--hb-accent);
+  border-radius: 50%;
+  animation: pulse 2s ease-in-out infinite;
 }
 
-.demo-subtitle {
-  font-size: 1.25rem;
-  color: var(--color-text-secondary);
-  max-width: 600px;
-  margin: 0 auto 2rem;
-  position: relative;
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
 }
 
-.demo-actions {
+.hero-heading {
+  margin-bottom: 1.5rem;
+}
+
+.brand-name {
+  display: block;
+  font-size: clamp(2.5rem, 6vw, 4rem);
+  font-weight: 800;
+  color: var(--hb-text);
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+}
+
+.brand-tagline {
+  display: block;
+  font-size: clamp(1.25rem, 3vw, 1.75rem);
+  color: var(--hb-accent);
+  font-weight: 400;
+  margin-top: 0.5rem;
+}
+
+.hero-text {
+  font-size: 1.125rem;
+  color: var(--hb-text-muted);
+  line-height: 1.7;
+  margin-bottom: 2rem;
+  max-width: 540px;
+}
+
+.hero-ctas {
   display: flex;
   gap: 1rem;
-  justify-content: center;
-  flex-wrap: wrap;
-  position: relative;
-}
-
-.demo-actions .btn-outline {
-  border: 2px solid var(--color-border-light);
-  color: var(--color-text-primary);
-  background: transparent;
-}
-
-.demo-actions .btn-outline:hover {
-  border-color: var(--color-accent-primary);
-  color: var(--color-accent-primary);
-}
-
-/* Demo Section */
-.demo-section {
-  padding: 5rem 1rem;
-}
-
-.demo-section--alt {
-  background: var(--color-primary-800);
-}
-
-.section-header {
   margin-bottom: 3rem;
+  flex-wrap: wrap;
 }
 
-.section-tag {
-  display: inline-block;
-  background: var(--color-accent-glow);
-  color: var(--color-accent-primary);
-  padding: 0.25rem 0.75rem;
-  border-radius: 1rem;
-  font-size: 0.75rem;
+.btn-board-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--hb-accent);
+  color: #000;
+  padding: 0.875rem 1.75rem;
+  border-radius: 0.5rem;
   font-weight: 600;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.btn-board-primary:hover {
+  background: #16a34a;
+  transform: translateY(-1px);
+}
+
+.btn-board-secondary {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.875rem 1.75rem;
+  color: var(--hb-text);
+  font-weight: 500;
+  text-decoration: none;
+  border: 1px solid var(--hb-border);
+  border-radius: 0.5rem;
+  transition: all 0.2s ease;
+}
+
+.btn-board-secondary:hover {
+  border-color: var(--hb-accent);
+  color: var(--hb-accent);
+}
+
+.hero-metrics {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.metric {
+  text-align: left;
+}
+
+.metric-num {
+  display: block;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--hb-text);
+}
+
+.metric-label {
+  font-size: 0.8rem;
+  color: var(--hb-text-muted);
+}
+
+.metric-divider {
+  width: 1px;
+  height: 30px;
+  background: var(--hb-border);
+}
+
+/* Story Section */
+.story-section {
+  padding: 5rem 0;
+  background: var(--hb-bg-alt);
+}
+
+.story-content {
+  max-width: 700px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.story-label {
+  font-size: 0.75rem;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.15em;
+  color: var(--hb-accent);
   margin-bottom: 0.75rem;
 }
 
-.section-header h2 {
-  font-size: 2rem;
+.story-title {
+  font-size: clamp(1.5rem, 4vw, 2rem);
+  font-weight: 700;
+  color: var(--hb-text);
+  margin-bottom: 1.25rem;
+}
+
+.story-text {
+  font-size: 1.0625rem;
+  color: var(--hb-text-muted);
+  line-height: 1.75;
+  margin-bottom: 1rem;
+}
+
+/* Features */
+.features-board {
+  padding: 5rem 0;
+  background: var(--hb-bg);
+}
+
+.features-header {
+  text-align: center;
+  margin-bottom: 3.5rem;
+}
+
+.features-label {
+  display: inline-block;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--hb-accent);
+  margin-bottom: 0.75rem;
+}
+
+.features-title {
+  font-size: clamp(1.5rem, 4vw, 2rem);
+  font-weight: 700;
+  color: var(--hb-text);
+}
+
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.5rem;
+}
+
+.feature-card-board {
+  background: var(--hb-bg-card);
+  border: 1px solid var(--hb-border);
+  border-radius: 0.75rem;
+  padding: 1.75rem;
+  transition: all 0.25s ease;
+}
+
+.feature-card-board:hover {
+  border-color: var(--hb-accent);
+  transform: translateY(-2px);
+}
+
+.feature-icon-board {
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--hb-accent-dim);
+  border-radius: 0.5rem;
+  color: var(--hb-accent);
+  margin-bottom: 1.25rem;
+}
+
+.feature-card-board h3 {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--hb-text);
   margin-bottom: 0.5rem;
 }
 
-.section-header p {
-  color: var(--color-text-secondary);
+.feature-card-board p {
+  font-size: 0.9375rem;
+  color: var(--hb-text-muted);
+  line-height: 1.6;
 }
 
-/* Demo Grid */
-.demo-grid {
+/* Demo Section */
+.demo-board {
+  padding: 5rem 0;
+  background: var(--hb-bg-alt);
+}
+
+.demo-header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.demo-label {
+  display: inline-block;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--hb-accent);
+  margin-bottom: 0.75rem;
+}
+
+.demo-title {
+  font-size: clamp(1.5rem, 4vw, 2rem);
+  font-weight: 700;
+  color: var(--hb-text);
+  margin-bottom: 0.5rem;
+}
+
+.demo-subtitle {
+  color: var(--hb-text-muted);
+}
+
+.demo-container {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-  gap: 2rem;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  align-items: center;
 }
 
-.demo-card {
-  background: var(--color-primary-700);
-  border-radius: var(--radius-xl);
+@media (max-width: 900px) {
+  .demo-container {
+    grid-template-columns: 1fr;
+  }
+}
+
+.demo-window-board {
+  background: var(--hb-bg-card);
+  border: 1px solid var(--hb-border);
+  border-radius: 0.75rem;
   overflow: hidden;
-  border: 1px solid var(--color-border);
-  transition: transform var(--transition-base), box-shadow var(--transition-base);
 }
 
-.demo-card:hover {
-  transform: translateY(-4px);
-  box-shadow: var(--shadow-xl);
-}
-
-.demo-card__header {
+.window-bar {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  padding: 1rem 1.5rem;
-  background: var(--color-primary-600);
-  font-weight: 600;
+  gap: 1rem;
+  padding: 0.875rem 1rem;
+  background: var(--hb-bg);
+  border-bottom: 1px solid var(--hb-border);
 }
 
-.demo-card__header i {
-  color: var(--color-accent-primary);
+.window-dots {
+  display: flex;
+  gap: 0.4rem;
 }
 
-.demo-card__body {
-  padding: 1.5rem;
+.window-dots span {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
 }
 
-.demo-card__badge {
+.window-dots span:nth-child(1) { background: #ef4444; }
+.window-dots span:nth-child(2) { background: #eab308; }
+.window-dots span:nth-child(3) { background: #22c55e; }
+
+.window-url {
+  flex: 1;
+  text-align: center;
+  font-size: 0.8125rem;
+  color: var(--hb-text-muted);
+}
+
+.window-content {
+  padding: 2rem;
+}
+
+.login-mockup {
+  max-width: 300px;
+  margin: 0 auto;
+}
+
+.mockup-header {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--hb-text);
+  margin-bottom: 1.5rem;
+}
+
+.mockup-header svg {
+  color: var(--hb-accent);
+}
+
+.mockup-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.875rem;
+}
+
+.mockup-field label {
+  display: block;
+  font-size: 0.75rem;
+  color: var(--hb-text-muted);
+  margin-bottom: 0.35rem;
+}
+
+.mockup-field input {
+  width: 100%;
+  padding: 0.7rem 0.875rem;
+  background: var(--hb-bg);
+  border: 1px solid var(--hb-border);
+  border-radius: 0.4rem;
+  color: var(--hb-text);
+  font-size: 0.875rem;
+}
+
+.mockup-btn {
+  width: 100%;
   padding: 0.75rem;
+  background: var(--hb-accent);
+  color: #000;
+  border: none;
+  border-radius: 0.4rem;
+  font-weight: 600;
+  margin-top: 0.75rem;
+}
+
+.mockup-footer {
+  display: flex;
+  justify-content: center;
+  gap: 1.25rem;
+  margin-top: 1.25rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--hb-border);
+  font-size: 0.7rem;
+  color: var(--hb-text-muted);
+}
+
+.demo-list {
+  display: none; /* Removed - using app-flow instead */
+}
+
+/* App Flow Visualization */
+.app-flow {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin: 3rem 0;
+}
+
+.flow-box {
+  flex: 0 0 280px;
+  max-width: 300px;
+}
+
+.flow-label {
+  text-align: center;
+  font-size: 0.75rem;
+  color: var(--hb-accent);
+  margin-bottom: 0.75rem;
+  font-weight: 600;
+}
+
+.flow-arrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--hb-text-muted);
+  padding-top: 2rem;
+}
+
+@media (max-width: 1100px) {
+  .flow-arrow {
+    transform: rotate(90deg);
+    padding: 0;
+  }
+}
+
+/* App Card - matching actual app styles */
+.app-card {
+  background: #1a2332;
+  border: 1px solid #374151;
+  border-radius: 1rem;
+  overflow: hidden;
+}
+
+.app-card:hover {
+  border-color: var(--hb-accent);
+}
+
+.app-card-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1rem;
+  background: #0f1729;
+  border-bottom: 1px solid #374151;
+  font-weight: 600;
+  color: #f1f5f9;
+}
+
+.app-card-header i {
+  font-size: 1.25rem;
+}
+
+.text-gold {
+  color: #d4a853 !important;
+}
+
+.text-accent-flow {
+  color: #00c896 !important;
+}
+
+.app-card-body {
+  padding: 1rem;
+}
+
+.app-field {
+  margin-bottom: 0.75rem;
+}
+
+.app-field label {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.7rem;
+  color: #94a3b8;
+  margin-bottom: 0.3rem;
+}
+
+.app-field label i {
+  font-size: 0.7rem;
+}
+
+.app-field input {
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  background: #0f1729;
+  border: 1px solid #374151;
+  border-radius: 0.5rem;
+  color: #f1f5f9;
+  font-size: 0.8125rem;
+}
+
+.app-btn {
+  width: 100%;
+  padding: 0.6rem;
+  border: none;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  font-size: 0.875rem;
+  cursor: default;
+}
+
+.app-btn-gold {
+  background: linear-gradient(135deg, #d4a853 0%, #c49a3d 100%);
+  color: #0a0f1a;
+}
+
+.app-btn-accent {
+  background: linear-gradient(135deg, #00c896 0%, #00a67d 100%);
+  color: #0a0f1a;
+}
+
+.app-card-footer {
+  padding: 0.75rem 1rem;
+  background: #0f1729;
+  border-top: 1px solid #374151;
+  text-align: center;
+  font-size: 0.7rem;
+  color: #94a3b8;
+}
+
+.app-card-footer a {
+  color: #00c896;
+  text-decoration: none;
+}
+
+/* Secrets Card */
+.app-card-secrets .app-card-header-secrets {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1rem;
+  background: #0f1729;
+  border-bottom: 1px solid #374151;
+  font-weight: 600;
+  color: #f1f5f9;
+}
+
+.jwt-badge {
+  margin-left: auto;
+  font-size: 0.6rem;
+  background: rgba(0, 200, 150, 0.2);
+  color: #00c896;
+  padding: 0.2rem 0.5rem;
+  border-radius: 0.25rem;
+  font-weight: 600;
+}
+
+.app-card-body-secrets {
+  padding: 1rem;
+}
+
+.secret-preview {
+  background: #0f1729;
+  border: 1px solid #374151;
+  border-radius: 0.5rem;
+  padding: 0.75rem;
+  margin-bottom: 0.5rem;
+}
+
+.secret-preview:last-child {
+  margin-bottom: 0;
+}
+
+.secret-preview i {
+  color: #00c896;
+  font-size: 0.8rem;
+  margin-right: 0.4rem;
+}
+
+.secret-preview p {
+  font-size: 0.75rem;
+  color: #f1f5f9;
+  margin: 0.4rem 0;
+}
+
+.secret-preview span {
+  font-size: 0.65rem;
+  color: #94a3b8;
+}
+
+.app-card-footer-secrets {
+  display: flex;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  background: #0f1729;
+  border-top: 1px solid #374151;
+}
+
+.app-btn-small {
+  flex: 1;
+  padding: 0.5rem;
+  border: none;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  font-size: 0.75rem;
+  cursor: default;
+}
+
+.app-btn-dark {
+  background: #374151;
+  color: #f1f5f9;
+}
+
+.flow-note {
+  text-align: center;
+  font-size: 0.9375rem;
+  color: var(--hb-text-muted);
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* Tech Section */
+.tech-board {
+  padding: 5rem 0;
+  background: var(--hb-bg);
+}
+
+.tech-header {
+  text-align: center;
+  margin-bottom: 2.5rem;
+}
+
+.tech-label {
+  display: inline-block;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--hb-accent);
+  margin-bottom: 0.75rem;
+}
+
+.tech-title {
+  font-size: clamp(1.5rem, 4vw, 2rem);
+  font-weight: 700;
+  color: var(--hb-text);
+}
+
+.tech-tags {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.tech-tag {
+  background: var(--hb-bg-card);
+  border: 1px solid var(--hb-border);
+  color: var(--hb-text);
+  padding: 0.5rem 1rem;
+  border-radius: 2rem;
   font-size: 0.875rem;
   font-weight: 500;
 }
 
-.demo-card__badge--success {
-  background: rgba(0, 200, 150, 0.1);
-  color: var(--color-accent-primary);
+/* CTA */
+.cta-board {
+  padding: 5rem 0;
+  background: var(--hb-bg-alt);
 }
 
-.demo-card__badge--info {
-  background: rgba(59, 130, 246, 0.1);
-  color: #3b82f6;
-}
-
-.demo-card__badge--warning {
-  background: rgba(212, 168, 83, 0.1);
-  color: var(--color-gold-primary);
-}
-
-/* Demo Form */
-.demo-form .demo-form-group {
-  margin-bottom: 1rem;
-}
-
-.demo-form label {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-size: 0.875rem;
-  color: var(--color-text-secondary);
-  margin-bottom: 0.5rem;
-}
-
-.demo-form input,
-.demo-form textarea {
-  width: 100%;
-  padding: 0.75rem 1rem;
-  background: var(--color-primary-800);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-md);
-  color: var(--color-text-primary);
-  font-size: 1rem;
-}
-
-.demo-form input:focus,
-.demo-form textarea:focus {
-  outline: none;
-  border-color: var(--color-accent-primary);
-}
-
-.demo-form textarea {
-  min-height: 100px;
-  resize: none;
-}
-
-/* Demo Secrets */
-.demo-secrets {
-  max-height: 250px;
-  overflow-y: auto;
-}
-
-.demo-secret-item {
-  padding: 1rem;
-  background: var(--color-primary-800);
-  border-radius: var(--radius-md);
-  margin-bottom: 0.75rem;
-  border-left: 3px solid var(--color-accent-primary);
-}
-
-.demo-secret-item:last-child {
-  margin-bottom: 0;
-}
-
-.demo-secret-item i {
-  color: var(--color-accent-primary);
-  margin-right: 0.5rem;
-}
-
-.demo-secret-item p {
-  margin: 0.5rem 0;
-  font-size: 0.9375rem;
-}
-
-.demo-secret-date {
-  font-size: 0.75rem;
-  color: var(--color-text-muted);
-}
-
-/* Features Grid */
-.features-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 1.5rem;
-}
-
-.feature-card {
-  background: var(--color-primary-700);
-  border-radius: var(--radius-xl);
-  padding: 2rem;
-  border: 1px solid var(--color-border);
-  transition: transform var(--transition-base);
-}
-
-.feature-card:hover {
-  transform: translateY(-2px);
-}
-
-.feature-card__icon {
-  width: 48px;
-  height: 48px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: var(--color-accent-glow);
-  border-radius: var(--radius-md);
-  font-size: 1.25rem;
-  color: var(--color-accent-primary);
-  margin-bottom: 1rem;
-}
-
-.feature-card h3 {
-  font-size: 1.25rem;
-  margin-bottom: 0.75rem;
-}
-
-.feature-card p {
-  color: var(--color-text-secondary);
-  font-size: 0.9375rem;
-  line-height: 1.6;
-  margin-bottom: 1rem;
-}
-
-.feature-card__code {
-  display: inline-block;
-  background: var(--color-primary-800);
-  padding: 0.375rem 0.75rem;
-  border-radius: var(--radius-sm);
-  font-family: var(--font-mono);
-  font-size: 0.8125rem;
-  color: var(--color-accent-primary);
-}
-
-/* Tech Stack */
-.tech-stack {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 2rem;
-}
-
-.tech-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.75rem;
-  padding: 1.5rem 2rem;
-  background: var(--color-primary-700);
-  border-radius: var(--radius-lg);
-  border: 1px solid var(--color-border);
-}
-
-.tech-item i {
-  font-size: 2rem;
-  color: var(--color-accent-primary);
-}
-
-.tech-item span {
-  font-size: 0.875rem;
-  color: var(--color-text-secondary);
-}
-
-/* CTA Section */
-.demo-cta {
-  padding: 5rem 1rem;
-  background: linear-gradient(180deg, var(--color-primary-900) 0%, var(--color-primary-800) 100%);
+.cta-box {
   text-align: center;
+  max-width: 500px;
+  margin: 0 auto;
 }
 
-.demo-cta h2 {
-  font-size: 2rem;
+.cta-box h2 {
+  font-size: clamp(1.5rem, 4vw, 2rem);
+  font-weight: 700;
+  color: var(--hb-text);
   margin-bottom: 0.75rem;
 }
 
-.demo-cta p {
-  color: var(--color-text-secondary);
+.cta-box p {
+  color: var(--hb-text-muted);
   margin-bottom: 2rem;
 }
 
-.demo-cta__actions {
+.cta-actions {
   display: flex;
   gap: 1rem;
   justify-content: center;
   flex-wrap: wrap;
 }
 
-.btn-lg {
-  padding: 1rem 2rem;
-  font-size: 1.125rem;
+.btn-cta-board {
+  background: var(--hb-accent);
+  color: #000;
+  padding: 0.875rem 1.75rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.2s ease;
 }
 
-.btn-accent {
-  background: var(--color-accent-primary);
-  color: var(--color-primary-900);
+.btn-cta-board:hover {
+  background: #16a34a;
 }
 
-.btn-accent:hover {
-  background: var(--color-accent-hover);
+.btn-cta-outline {
+  background: transparent;
+  color: var(--hb-text);
+  padding: 0.875rem 1.75rem;
+  border-radius: 0.5rem;
+  font-weight: 500;
+  text-decoration: none;
+  border: 1px solid var(--hb-border);
+  transition: all 0.2s ease;
 }
 
-/* Responsive */
+.btn-cta-outline:hover {
+  border-color: var(--hb-text-muted);
+}
+
+/* Animations */
+[data-aos="fade-up"], [data-aos="fade-right"], [data-aos="fade-left"], [data-aos="zoom-in"] {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+[data-aos="fade-right"] { transform: translateX(-20px); }
+[data-aos="fade-left"] { transform: translateX(20px); }
+[data-aos="zoom-in"] { transform: scale(0.95); }
+
+[data-aos].aos-animate {
+  opacity: 1;
+  transform: translateY(0) translateX(0) scale(1);
+}
+
 @media (max-width: 768px) {
-  .demo-hero {
-    padding: 4rem 1rem 3rem;
+  .hero-board {
+    padding: 4rem 0 3rem;
+    min-height: auto;
   }
 
-  .demo-section {
-    padding: 3rem 1rem;
+  .hero-metrics {
+    flex-wrap: wrap;
   }
 
-  .demo-grid {
-    grid-template-columns: 1fr;
+  .metric-divider {
+    display: none;
   }
 
-  .tech-stack {
-    gap: 1rem;
-  }
-
-  .tech-item {
-    padding: 1rem 1.5rem;
+  .story-section,
+  .features-board,
+  .demo-board,
+  .tech-board,
+  .cta-board {
+    padding: 3.5rem 0;
   }
 }
 </style>
 
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // Hamburger menu toggle
+  const hamburger = document.getElementById('hamburger');
+  const mobileNavMenu = document.getElementById('mobile-nav-menu');
+
+  if (hamburger && mobileNavMenu) {
+    hamburger.addEventListener('click', function() {
+      hamburger.classList.toggle('active');
+      mobileNavMenu.classList.toggle('active');
+    });
+
+    // Close menu when clicking a link
+    mobileNavMenu.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', function() {
+        hamburger.classList.remove('active');
+        mobileNavMenu.classList.remove('active');
+      });
+    });
+  }
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('aos-animate');
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('[data-aos]').forEach(el => observer.observe(el));
+
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function(e) {
+      e.preventDefault();
+      const target = document.querySelector(this.getAttribute('href'));
+      if (target) target.scrollIntoView({ behavior: 'smooth' });
+    });
+  });
+});
+</script>
+
 <%- include('partials/footer') %>
+
