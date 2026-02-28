@@ -10,7 +10,7 @@ A production-ready secure authentication application demonstrating enterprise-gr
 |--------------|----------|
 | Use the current Supabase version | [Getting Started](#-getting-started-supabase) |
 | See the old JWT version | [Custom JWT Version](#-custom-jwt-version-legacy) |
-| I want to see the old Passport.js code | Check app.js (commented out)
+| I want to see the old Passport.js code | Check oldApp.js (commented out)
 | Learn about the migration | [Migration Journey](#-migration-journey) |
 | Deploy to Vercel | [Deployment](#-deployment) |
 | Learn key concepts | [Key Concepts](#-key-concepts-learned) |
