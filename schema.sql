@@ -1,10 +1,12 @@
 -- Supabase Auth Version
 -- This schema works with Supabase's built-in authentication
 
+-- Drop old tables if they exist (to fix uuid = integer error)
+DROP TABLE IF EXISTS secrets CASCADE;
+DROP TABLE IF EXISTS users CASCADE;
+
 -- Create secrets table using UUID for user_id (matches Supabase auth.users.id)
 -- We don't need a separate users table - Supabase handles that!
-
--- Create secrets table
 CREATE TABLE IF NOT EXISTS secrets (
   id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
   user_id UUID REFERENCES auth.users(id) ON DELETE CASCADE,
