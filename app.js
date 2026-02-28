@@ -86,13 +86,6 @@ const port = process.env.PORT || 3000;
 // SECTION 4: SECURITY CHECKS
 // ═══════════════════════════════════════════════════════════════════════════════
 
-// Check if JWT secret exists (needed to sign/verify tokens)
-if (!process.env.JWT_SECRET) {
-  console.error("JWT_SECRET is missing from .env file!");
-  console.error("Add JWT_SECRET=your_random_string to your .env file");
-  process.exit(1);
-}
-
 // Check if Supabase credentials exist
 if (!supabaseUrl || !supabaseKey) {
   console.error("Supabase credentials missing!");
