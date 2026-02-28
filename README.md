@@ -10,7 +10,7 @@ A production-ready secure authentication application demonstrating enterprise-gr
 |--------------|----------|
 | Use the current Supabase version | [Getting Started](#-getting-started-supabase) |
 | See the old JWT version | [Custom JWT Version](#-custom-jwt-version-legacy) |
-| I want to see the old Passport.js code | Check oldApp.js (commented out)
+| See the original Passport.js code | [oldApp.js](#-passportjs-original---oldappjs) |
 | Learn about the migration | [Migration Journey](#-migration-journey) |
 | Deploy to Vercel | [Deployment](#-deployment) |
 | Learn key concepts | [Key Concepts](#-key-concepts-learned) |
@@ -23,7 +23,7 @@ This project has **three authentication versions**:
 
 | Version | Status | Auth Method | Best For |
 |---------|--------|-------------|----------|
-| **Passport.js** | ❌ Removed | Sessions + bcrypt | Learning purposes |
+| **Passport.js** | ❌ Removed | Sessions + bcrypt | See oldApp.js |
 | **Custom JWT** | 🔒 Legacy | Your own JWT + bcrypt | Learning JWT |
 | **Supabase Auth** | ✅ Current | Managed by Supabase | Production apps |
 
@@ -172,18 +172,18 @@ This project went through **3 authentication methods**:
 Passport.js (sessions) → Custom JWT → Supabase Auth
 ```
 
-| Version | Method | Status |
-|---------|--------|--------|
-| 1 | Passport.js + Sessions | ❌ Removed |
-| 2 | Custom JWT + bcrypt | 🔒 Legacy |
-| 3 | Supabase Auth | ✅ Current |
+| Version | Method | Status | File |
+|---------|--------|--------|------|
+ | 1 | Passport.js + Sessions | ❌ Removed | [oldApp.js](#-passportjs-original---oldappjs) |
+ | 2 | Custom JWT + bcrypt | 🔒 Legacy | app.js (commented) |
+ | 3 | Supabase Auth | ✅ Current | app.js |
 
-### Passport.js (Original - Removed)
+### Passport.js (Original - oldApp.js)
 
-The **first version** used Passport.js with local sessions:
+The **original version** is now in `oldApp.js` - it used Passport.js with local sessions:
 
 ```javascript
-// OLD passport setup
+// Original passport setup in oldApp.js
 import passport from 'passport';
 import { Strategy as LocalStrategy } from 'passport-local';
 
@@ -194,7 +194,22 @@ passport.use(new LocalStrategy(async (email, password, done) => {
 app.use(passport.session());
 ```
 
-**Why removed?**
+**To run the old version:**
+```bash
+# Rename current app.js to app.supabase.js
+mv app.js app.supabase.js
+
+# Rename oldApp.js to app.js
+mv oldApp.js app.js
+
+# Install passport dependencies if needed
+npm install passport passport-local express-session
+
+# Run
+npm start
+```
+
+**Why removed from main app?**
 - Sessions don't work well with serverless (Vercel)
 - Each request might hit a different server
 - No shared session storage
@@ -329,7 +344,8 @@ secrets-vault/
 │   ├── secrets.ejs         # Protected
 │   └── submit.ejs          # Add secret
 ├── .env                    # Local vars
-├── app.js                  # Main app
+├── app.js                  # Current (Supabase)
+├── oldApp.js               # Original Passport.js version
 ├── vercel.json             # Vercel config
 ├── schema.sql              # DB schema
 └── package.json            # Dependencies
@@ -357,11 +373,12 @@ secrets-vault/
 
 This project taught me:
 
-1. **Authentication** - JWT, sessions, cookies, bcrypt
+1. **Authentication** - JWT, sessions, cookies, bcrypt, Passport.js
 2. **Database Security** - RLS, parameterized queries
 3. **Deployment** - Vercel, environment variables
 4. **API Design** - REST routes, middleware
 5. **Problem Solving** - Debugging deployment issues
+6. **Architecture** - Choosing between session-based vs token-based auth
 
 ---
 
