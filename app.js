@@ -1,373 +1,710 @@
-//jshint esversion:6
+// ╔══════════════════════════════════════════════════════════════════════════════╗
+// ║                        SECRETS APP - JWT VERSION                             ║
+// ║                   A Secure Vault for Storing Your Secrets                    ║
+// ║                                                                                ║
+// ║  WHAT THIS APP DOES:                                                          ║
+// ║  • Users can register an account (email + password)                          ║
+// ║  • Passwords are encrypted (hashed) so no one can read them                  ║
+// ║  • Users can submit secrets (only they can see their own)                    ║
+// ║  • Uses Supabase as the database                                              ║
+// ║  • Uses JWT (JSON Web Tokens) for authentication                             ║
+// ║                                                                                ║
+// ║  HOW IT WORKS (JWT VERSION):                                                  ║
+// ║  1. User signs up → password gets hashed → saved to database                  ║
+// ║  2. User logs in → password is checked against the hash                       ║
+// ║  3. If correct → user gets a JWT token (like a golden ticket they carry)     ║
+// ║  4. User can now access protected pages and submit secrets                    ║
+// ║                                                                                ║
+// ║  WHY JWT INSTEAD OF SESSIONS?                                                 ║
+// ║  • Sessions need server memory (doesn't work on serverless/Vercel)           ║
+// ║  • JWT is stateless - server just verifies, no memory needed                 ║
+// ║  • Perfect for Vercel deployment!                                             ║
+// ╚══════════════════════════════════════════════════════════════════════════════╝
 
-// Express - the web framework that handles routes and requests
+// ═══════════════════════════════════════════════════════════════════════════════
+// SECTION 1: IMPORTING ALL THE TOOLS WE NEED
+// ═══════════════════════════════════════════════════════════════════════════════
+
+"use strict";
+
+// Express - the web framework (handles all incoming requests like a receptionist)
 import express from 'express';
 
-// Body parser - lets us read form data (username, password) from the request
+// Body parser - reads form data (what user typed in forms)
 import bodyParser from 'body-parser';
 
-// EJS - template engine to render HTML pages
+// EJS - template engine (lets us mix HTML with JavaScript)
 import ejs from 'ejs';
 
 // Dotenv - loads secrets from .env file (keeps passwords out of code)
 import dotenv from 'dotenv';
 
-// PG - PostgreSQL library to talk to our database
-import pg from 'pg';
-
+// Rate limiter - prevents spam attacks
 import rateLimit from 'express-rate-limit';
 
-// Bcrypt - THE MOST IMPORTANT PART!
-// This turns passwords into unreadable scrambled text
-// We do this so even if hackers steal our database, they can't read anyone's passwords
-// Think of it like: "password123" → "Xy9#bL$2kM..."
+// Bcrypt - scrambles passwords so hackers can't read them
 import bcrypt from 'bcrypt';
 
-import session from 'express-session';
-import passport from 'passport';
-import { Strategy as LocalStrategy } from 'passport-local';
+// JWT - creates tokens for authentication (the "golden ticket" system)
+import jwt from 'jsonwebtoken';
 
-// Load environment variables from .env file
+// Supabase - cloud database
+import { createClient } from '@supabase/supabase-js';
+
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// SECTION 2: SETTING UP THE DATABASE (SUPABASE)
+// ═══════════════════════════════════════════════════════════════════════════════
+
 dotenv.config();
 
-// ═══════════════════════════════════════════════════════════════════════════
-// DATABASE CONNECTION - How we connect to PostgreSQL
-// ═══════════════════════════════════════════════════════════════════════════
+const supabaseUrl = process.env.SUPABASE_URL;
+const supabaseKey = process.env.SUPABASE_ANON_KEY;
 
-const { Pool } = pg;
+const supabase = createClient(supabaseUrl, supabaseKey);
 
-// Create a connection pool to the database
-// This is like opening multiple phone lines so many people can call at once
-const pool = new Pool({
-  user: process.env.DB_USER,
-  host: process.env.DB_HOST,
-  database: process.env.DB_NAME,
-  password: process.env.DB_PASSWORD,
-  port: process.env.DB_PORT,
-});
 
-// ═══════════════════════════════════════════════════════════════════════════
-// APP SETUP - Configure Express
-// ═══════════════════════════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════════════════════════════
+// SECTION 3: APP SETUP & CONFIGURATION
+// ═══════════════════════════════════════════════════════════════════════════════
 
 const app = express();
 const port = process.env.PORT || 3000;
 
-// SESSION & PASSPORT SETUP - Must come AFTER app is created!
-if(!process.env.SESSION_SECRET) {
-  console.error('✗ SESSION_SECRET is not set in .env file');
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// SECTION 4: SECURITY CHECKS
+// ═══════════════════════════════════════════════════════════════════════════════
+
+// Check if JWT secret exists (needed to sign/verify tokens)
+if (!process.env.JWT_SECRET) {
+  console.error("JWT_SECRET is missing from .env file!");
+  console.error("Add JWT_SECRET=your_random_string to your .env file");
   process.exit(1);
 }
 
-//check rest of environment variables
-if(!process.env.DB_USER || !process.env.DB_HOST || !process.env.DB_NAME || !process.env.DB_PASSWORD || !process.env.DB_PORT) {
-  console.error('Env variables not set right or are missing');
+// Check if Supabase credentials exist
+if (!supabaseUrl || !supabaseKey) {
+  console.error("Supabase credentials missing!");
+  console.error("Add SUPABASE_URL and SUPABASE_ANON_KEY to your .env file");
   process.exit(1);
 }
 
-app.use(
-  session({
-    secret: process.env.SESSION_SECRET,
-    resave: false,
-    saveUninitialized: false,
-  })
-);
 
-app.use(passport.initialize());
-app.use(passport.session());
+// ═══════════════════════════════════════════════════════════════════════════════
+// SECTION 5: JWT CONFIGURATION
+// ═══════════════════════════════════════════════════════════════════════════════
 
-// PASSPORT LOCAL STRATEGY - Tells Passport how to verify passwords
-// This is like having a security guard check IDs at the door
-passport.use(
-  new LocalStrategy(async (email, password, done) => {
-    try {
-      // Step 1: Find user in database by email
-      const result = await pool.query('SELECT * FROM users WHERE email = $1', [
-        email,
-      ]);
+// JWT settings - controls how our tokens work
+const JWT_OPTIONS = {
+  // The secret key used to sign tokens (like a wax seal - proves it's real!)
+  secret: process.env.JWT_SECRET,
 
-      // Step 2: No user found?
-      if (result.rows.length === 0) {
-        return done(null, false, { message: 'No user found with that email' });
-      }
+  // How long the token lasts (after this, user must log in again)
+  expiresIn: '24h'
+};
 
-      // Step 3: Check the password!
-      // We use bcrypt.compare to see if the typed password matches
-      const match = await bcrypt.compare(password, result.rows[0].password);
 
-      if (!match) {
-        return done(null, false, { message: 'Incorrect password' });
-      }
+// ═══════════════════════════════════════════════════════════════════════════════
+// SECTION 6: JWT HELPER FUNCTIONS
+// ═══════════════════════════════════════════════════════════════════════════════
 
-      // Step 4: Success! Return the user
-      return done(null, result.rows[0]);
-    } catch (err) {
-      return done(err);
-    }
-  })
-);
+/**
+ * GENERATE TOKEN - Creates a new JWT token for a user
+ *
+ * Think of it like: printing a golden ticket for a theme park
+ * The ticket has your name on it and a special seal only the park can make
+ *
+ * @param {Object} user - The user object (we only store id and email)
+ * @returns {string} The signed JWT token
+ */
+function generateToken(user) {
+  // We only put essential info in the token (never the password!)
+  const payload = {
+    id: user.id,
+    email: user.email
+  };
 
-// SERIALIZE - Save user's ID to the session cookie
-// This is like giving them a VIP wristband when they enter
-passport.serializeUser((user, done) => {
-  done(null, user.id);
-});
+  // Sign it with our secret and set expiration
+  return jwt.sign(payload, JWT_OPTIONS.secret, { expiresIn: JWT_OPTIONS.expiresIn });
+}
 
-// DESERIALIZE - Look up user by ID from the session cookie
-// This is like scanning their VIP wristband to who they are
-passport.deserializeUser(async (id, done) => {
+
+/**
+ * VERIFY TOKEN - Checks if a token is real and not expired
+ *
+ * Think of it like: checking if a theme park ticket is real
+ * 1. Does it have our special seal? (signature check)
+ * 2. Is it from today? (expiration check)
+ *
+ * @param {string} token - The JWT token to verify
+ * @returns {Object|null} The decoded payload if valid, null if invalid
+ */
+function verifyToken(token) {
   try {
-    const result = await pool.query('SELECT * FROM users WHERE id = $1', [id]);
-    done(null, result.rows[0]);
+    // jwt.verify checks the signature AND expiration
+    return jwt.verify(token, JWT_OPTIONS.secret);
   } catch (err) {
-    done(err, null);
+    // Token is fake or expired - don't reveal details, just return null
+    console.log("Token verification failed:", err.message);
+    return null;
   }
-});
+}
 
-// Serve static files (CSS, images) from the public folder
-app.use(express.static('public'));
 
-// Use EJS as our template engine - lets us embed JS in HTML
-app.set('view engine', 'ejs');
+/**
+ * EXTRACT TOKEN - Gets the token from the request header
+ *
+ * The header looks like: "Bearer eyJhbGciOiJIUzI1NiIs..."
+ * We extract just the token part after "Bearer "
+ *
+ * @param {Object} req - Express request object
+ * @returns {string|null} The token or null if not found
+ */
+function extractToken(req) {
+  const authHeader = req.headers.authorization;
 
-// Parse form data - WITHOUT this, req.body.username would be undefined!
+  if (!authHeader) {
+    return null;
+  }
+
+  const parts = authHeader.split(' ');
+
+  if (parts.length !== 2 || parts[0] !== 'Bearer') {
+    return null;
+  }
+
+  return parts[1];
+}
+
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// SECTION 7: MIDDLEWARE SETUP
+// ═══════════════════════════════════════════════════════════════════════════════
+
+// Serve static files (CSS, images)
+app.use(express.static("public"));
+
+// Use EJS for templates
+app.set("view engine", "ejs");
+
+// Parse form data
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// Rate limit
-
-// General API rate limiter
-const generalLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100, // 100 requests per window
-  message: 'Too many requests, please try again later',
-});
-
-// Strict limiter for login attempts
-const loginLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 5, // 5 failed attempts per window
-  skipSuccessfulRequests: true, // only count failed attempts
-  message: 'Too many login attempts, please try again later',
-});
-
-// Apply limiters
-app.use(generalLimiter);
-app.use('/login', loginLimiter);
-app.use('/register', loginLimiter);
+// Parse JSON (for API requests)
+app.use(express.json());
 
 
-// ═══════════════════════════════════════════════════════════════════════════
-// SECURITY SETUP - Bcrypt configuration
-// ═══════════════════════════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════════════════════════════
+// SECTION 8: AUTHENTICATION MIDDLEWARE
+// ═══════════════════════════════════════════════════════════════════════════════
 
-// saltRounds = how many times we "cook" the password hash
-// More rounds = more secure but slower
-// 10 is the standard - good balance for most apps
-//
-// Analogy: Making hash is like cooking soup
-// 1 round = just mix ingredients together (weak)
-// 10 rounds = simmer for hours (very secure)
-// 20 rounds = simmer for days (overkill, too slow)
-const saltRounds = 10;
-
-// ═══════════════════════════════════════════════════════════════════════════
-// ROUTES - The different pages visitors can access
-// ═══════════════════════════════════════════════════════════════════════════
-
-// HOME PAGE - The main landing page
-app.get('/', function (req, res) {
-  res.render('home');
-});
-
-// LOGIN PAGE - Form where users enter credentials
-app.get('/login', function (req, res) {
-  res.render('login');
-});
-
-// REGISTER PAGE - Form where new users sign up
-app.get('/register', function (req, res) {
-  res.render('register');
-});
-
-// Middleware to check if user is logged in
+/**
+ * CHECK AUTHENTICATED - The gatekeeper for protected routes
+ *
+ * This runs BEFORE any protected route (like /secrets)
+ * It's like a bouncer checking your ID at the door
+ *
+ * Step 1: Do you have a ticket? (token in header)
+ * Step 2: Is it real? (verify the signature)
+ * Step 3: Has it expired? (check the date)
+ * Step 4: If yes to all → Come on in! (set req.user and call next())
+ * Step 5: If no → Go to login! (redirect)
+ */
 function checkAuthenticated(req, res, next) {
-  if (req.isAuthenticated()) {
-    return next();
+  // Step 1: Get the token from request
+  const token = extractToken(req);
+
+  // Step 2: No token? Not logged in!
+  if (!token) {
+    console.log("No token provided");
+    return res.redirect("/login");
   }
-  res.redirect('/login');
+
+  // Step 3: Verify the token
+  const payload = verifyToken(token);
+
+  // Step 4: Invalid or expired?
+  if (!payload) {
+    console.log("Token invalid or expired");
+    return res.redirect("/login");
+  }
+
+  // Step 5: Valid! Add user info to request
+  // Now the route knows WHO is asking
+  req.user = {
+    id: payload.id,
+    email: payload.email
+  };
+
+  console.log("User authenticated:", payload.email);
+
+  // Step 6: Let them through to the protected page
+  next();
 }
 
-// SECRETS PAGE - Only for logged-in users (protected)
-app.get('/secrets', checkAuthenticated, function (req, res) {
-  res.render('secrets');
+
+/**
+ * API VERSION - For AJAX/Fetch requests
+ * Same as above but returns JSON instead of redirect
+ * Used when frontend JavaScript makes the request
+ */
+function checkAuthenticatedAPI(req, res, next) {
+  const token = extractToken(req);
+
+  if (!token) {
+    return res.status(401).json({ error: "No token provided" });
+  }
+
+  const payload = verifyToken(token);
+
+  if (!payload) {
+    return res.status(401).json({ error: "Invalid or expired token" });
+  }
+
+  req.user = {
+    id: payload.id,
+    email: payload.email
+  };
+
+  next();
+}
+
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// SECTION 9: RATE LIMITING
+// ═══════════════════════════════════════════════════════════════════════════════
+
+// General limiter - applies to most routes
+const generalLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,  // 15 minutes
+  max: 100,                    // 100 requests per 15 minutes
+  message: "Too many requests! Please try again in 15 minutes",
 });
 
-app.get('/logout', function (req, res) {
-  req.logout(function (err) {
-    if (err) {
-      return next(err);
+// Strict limiter - for login/register (prevents hackers from guessing passwords)
+const loginLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 5,                      // Only 5 tries!
+  skipSuccessfulRequests: true,  // Don't count successful logins
+  message: "Too many failed login attempts! Please try again in 15 minutes",
+});
+
+app.use(generalLimiter);
+app.use("/login", loginLimiter);
+app.use("/register", loginLimiter);
+
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// SECTION 10: SECURITY CONFIG - BCRYPT
+// ═══════════════════════════════════════════════════════════════════════════════
+
+// Salt rounds - how many times we mix the password
+// 10 is the sweet spot: secure but not too slow
+const saltRounds = 10;
+
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// SECTION 11: DATABASE HELPER FUNCTIONS
+// ═══════════════════════════════════════════════════════════════════════════════
+
+// Find user by their email
+async function findUserByEmail(email) {
+  const { data: users, error } = await supabase
+    .from("users")
+    .select("*")
+    .eq("email", email);
+
+  if (error || !users || users.length === 0) {
+    return null;
+  }
+
+  return users[0];
+}
+
+// Find user by their ID
+async function findUserById(id) {
+  const { data: user, error } = await supabase
+    .from("users")
+    .select("*")
+    .eq("id", id)
+    .single();
+
+  if (error) {
+    return null;
+  }
+
+  return user;
+}
+
+// Verify password against the hash
+async function verifyPassword(plainPassword, hashedPassword) {
+  return await bcrypt.compare(plainPassword, hashedPassword);
+}
+
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// SECTION 12: ROUTES
+// ═══════════════════════════════════════════════════════════════════════════════
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// PUBLIC ROUTES - Anyone can visit these
+// ═══════════════════════════════════════════════════════════════════════════════
+
+// Home page - welcome screen
+app.get("/", (req, res) => {
+  res.render("home");
+});
+
+// Login page - form for existing users
+app.get("/login", (req, res) => {
+  res.render("login");
+});
+
+// Register page - form for new users
+app.get("/register", (req, res) => {
+  res.render("register");
+});
+
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// PROTECTED ROUTES - Must be logged in (have valid token)
+// ═══════════════════════════════════════════════════════════════════════════════
+
+// Secrets page - shows user's secrets
+// The "checkAuthenticated" middleware runs first
+app.get("/secrets", checkAuthenticated, async (req, res) => {
+  try {
+    // Fetch ONLY this user's secrets from database
+    const { data: secrets, error } = await supabase
+      .from("secrets")
+      .select("*")
+      .eq("user_id", req.user.id)  // req.user.id comes from the token!
+      .order("created_at", { ascending: false });
+
+    if (error) {
+      throw error;
     }
-    res.redirect('/');
-  });
+
+    // Send to the page
+    res.render("secrets", { secrets: secrets });
+  } catch (error) {
+    console.error("Error fetching secrets:", error);
+    res.redirect("/");
+  }
 });
 
-// ═══════════════════════════════════════════════════════════════════════════
-// REGISTRATION - Creating a new account
-// ═══════════════════════════════════════════════════════════════════════════
+// Submit page - form to add new secret
+app.get("/submit", checkAuthenticated, (req, res) => {
+  res.render("submit");
+});
 
-/*
-   WHAT HAPPENS WHEN SOMEONE REGISTERS:
+// Logout - redirect home (client will clear the cookie)
+app.get("/logout", (req, res) => {
+  res.redirect("/");
+});
 
-   1. User fills out form with email + password
-   2. We grab those values from the form
-   3. We "hash" (scramble) the password using bcrypt
-   4. We save the email + SCRAMBLED password to database
-   5. Send them to login page
 
-   WHY WE DO THIS:
-   We NEVER store the real password! If a hacker steals our database,
-   all they see is gibberish like "$2b$10$Xy9..."
-   They can't "un-scramble" it - it's mathematically impossible!
-*/
+// ═══════════════════════════════════════════════════════════════════════════════
+// POST ROUTES - Forms that send data
+// ═══════════════════════════════════════════════════════════════════════════════
 
-app.post('/register', async function (req, res) {
-  // Step 1.0: Get what they typed in the form
+// Register - create new account
+app.post("/register", async (req, res) => {
   const username = req.body.username?.trim();
   const password = req.body.password?.trim();
 
-  // Step 1.1 Check duplicate email
-  const emailExists = await pool.query(
-    'SELECT * FROM users WHERE email = $1',
-    [username]
-  );
-  if (emailExists.rows.length > 0) {
-    return res.status(400).send('Email already exists');
+  // Check if email already exists
+  const existingUser = await findUserByEmail(username);
+
+  if (existingUser) {
+    return res.status(400).send("Email already exists! Try logging in.");
   }
 
-  // Password Strength Check
+  // Validate password length
   if (password.length < 8) {
-    return res.status(400).send('Password must be at least 8 characters long');
+    return res.status(400).send("Password must be at least 8 characters long");
   }
 
   if (password.length > 20) {
-    return res.status(400).send('Password must be at most 20 characters long');
+    return res.status(400).send("Password must be no more than 20 characters long");
   }
 
-  if (!/^[a-zA-Z0-9!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+$/.test(password)) {
-    return res
-      .status(400)
-      .send('Password must only contain letters and numbers');
-  }
+  // Validate email format
+  const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 
-  // Email Regex Check
-  if (
-    !/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(
-      username
-    )
-  ) {
-    return res.status(400).send('Invalid email format');
+  if (!emailRegex.test(username)) {
+    return res.status(400).send("Please enter a valid email address");
   }
 
   if (!username || !password) {
-    return res.status(400).send('Missing username or password');
+    return res.status(400).send("Please fill in all fields");
   }
 
-  // Step 2: Hash the password!
-  // bcrypt.hash takes the plain password and scrambles it asynchronously
-  // Example: "mypassword123" → "$2b$10$vI8aWB3W3gBtXcM6..."
-  //
-  // The 2nd parameter (saltRounds=10) is how many times we re-scramble
-  // This makes it MUCH harder for hackers to crack
+  // Hash the password - NEVER store plain text!
   const hashedPassword = await bcrypt.hash(password, saltRounds);
 
-  // Step 3: Try to save to database
+  // Save to database
   try {
-    // Run the INSERT query - save email + HASHED password
-    // We DO NOT save the real password!
-    await pool.query('INSERT INTO users (email, password) VALUES ($1, $2)', [
-      username,
-      hashedPassword,
-    ]);
+    const { data, error } = await supabase
+      .from("users")
+      .insert([{ email: username, password: hashedPassword }]);
 
-    // Success! Let them know and send to login
-    console.log('✓ User registered successfully');
-    res.redirect('/login');
+    if (error) {
+      throw error;
+    }
+
+    console.log("User registered successfully!");
+    res.redirect("/login");
   } catch (err) {
-    // Something went wrong (maybe user already exists?)
-    console.error('✗ Error registering user:', err.message);
-    res
-      .status(500)
-      .send('Error registering user - maybe that email already exists?');
+    console.error("Error registering user:", err.message);
+    res.status(500).send("Error registering user. Email might already exist.");
   }
 });
 
-// ═══════════════════════════════════════════════════════════════════════════
-// LOGIN - Signing into an existing account
-// Now handled by Passport! No more manual bcrypt logic needed
-app.post(
-  '/login',
-  passport.authenticate('local', {
-    successRedirect: '/secrets',
-    failureRedirect: '/login',
-  })
-);
+
+// LOGIN - The key part that creates the JWT token!
+/**
+ * LOGIN PROCESS - What happens when user clicks "Login":
+ *
+ * 1. User types email + password
+ * 2. We find their account in database
+ * 3. We check if password matches (using bcrypt)
+ * 4. If correct → GENERATE JWT TOKEN (the golden ticket!)
+ * 5. Send token to browser in a secure cookie
+ * 6. Browser automatically sends cookie with every future request
+ * 7. Server reads cookie → verifies token → knows who you are!
+ *
+ * This is different from sessions because:
+ * - Sessions: Server remembers you (needs memory!)
+ * - JWT: You carry proof with you (server doesn't need to remember)
+ */
+app.post("/login", async (req, res) => {
+  try {
+    const { username, password } = req.body;
+
+    // Step 1: Find user in database
+    const user = await findUserByEmail(username);
+
+    if (!user) {
+      return res.status(401).render("login", {
+        error: "No user found with that email"
+      });
+    }
+
+    // Step 2: Verify password against hash
+    const isValid = await verifyPassword(password, user.password);
+
+    if (!isValid) {
+      return res.status(401).render("login", {
+        error: "Incorrect password"
+      });
+    }
+
+    // Step 3: Generate JWT token - THIS IS THE KEY PART!
+    // Instead of creating a session, we make a portable token
+    const token = generateToken(user);
+
+    console.log("User logged in:", user.email);
+
+    // Step 4: Send token to browser in a secure cookie
+    // httpOnly: true = JavaScript can't read it (protects against XSS)
+    // secure: true = only sent over HTTPS
+    // sameSite: 'strict' = prevents CSRF attacks
+    res.cookie('token', token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'strict',
+      maxAge: 24 * 60 * 60 * 1000  // 24 hours
+    });
+
+    // Step 5: Send to protected page
+    res.redirect("/secrets");
+
+  } catch (err) {
+    console.error("Login error:", err);
+    res.status(500).render("login", { error: "Server error during login" });
+  }
+});
+
+
+// Submit - save a new secret
+app.post("/submit", checkAuthenticated, async (req, res) => {
+  const submittedSecret = req.body.secret;
+
+  console.log("New secret submitted by user ID:", req.user.id);
+
+  try {
+    const { data, error } = await supabase
+      .from("secrets")
+      .insert([{ secret_text: submittedSecret, user_id: req.user.id }]);
+
+    if (error) {
+      console.error("Error saving secret:", error);
+      return res.status(500).send("Error saving your secret");
+    }
+
+    res.redirect("/secrets");
+  } catch (err) {
+    console.error("Error saving secret:", err);
+    res.status(500).send("Error saving your secret");
+  }
+});
+
+
+// API route - for JavaScript to get current user info
+app.get("/api/me", checkAuthenticatedAPI, (req, res) => {
+  res.json({
+    id: req.user.id,
+    email: req.user.email
+  });
+});
+
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// SECTION 13: START THE SERVER
+// ═══════════════════════════════════════════════════════════════════════════════
+
+app.listen(port, async () => {
+  const { data, error } = await supabase.from("users").select("id").limit(1);
+
+  if (error) {
+    console.error("Failed to connect to Supabase!");
+    console.error("Error:", error.message);
+  } else {
+    console.log("==================================================");
+    console.log("SERVER STARTED SUCCESSFULLY!");
+    console.log("==================================================");
+    console.log("Running on: http://localhost:" + port);
+    console.log("Connected to Supabase");
+    console.log("Authentication: JWT (Golden Ticket System)");
+    console.log("EJS Templates: Enabled");
+  }
+});
+
+
+// ═══════════════════════════════════════════════════════════════════════════════
+//                       OLD SESSION CODE (KEPT FOR REFERENCE)
+// ═══════════════════════════════════════════════════════════════════════════════
 
 /*
-// ═══════════════════════════════════════════════════════════════════════════
-// ORIGINAL LOGIN CODE (before Passport) - kept for reference
-// ═══════════════════════════════════════════════════════════════════════════
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                    FORMER SESSION-BASED AUTH CODE                             ║
+║                    (Kept here for reference/learning)                         ║
+╚══════════════════════════════════════════════════════════════════════════════╝
 
-// WHAT HAPPENS WHEN SOMEONE LOGS IN:
-// 1. User types email + password
-// 2. We look up the user by email in database
-// 3. We take the password they typed and HASH it
-// 4. We compare the NEW hash with the STORED hash
-// 5. If they match → they get in!
-// 6. If they don't match → access denied
+SESSION VS JWT - THE KEY DIFFERENCE:
+────────────────────────────────────
 
-app.post('/login', async function (req, res) {
-  const username = req.body.username;
-  const password = req.body.password;
+OLD WAY (Sessions) - Like a Coat Check:
+• You hand your coat → they give you a numbered ticket
+• When you leave, you show the ticket
+• The attendant looks up #42 → "Oh, that's Bertin's coat!"
+• PROBLEM: The attendant must remember everyone!
 
-  try {
-    const result = await pool.query('SELECT * FROM users WHERE email = $1', [
-      username,
-    ]);
+NEW WAY (JWT) - Like a Signed Letter:
+• You get a letter with your name and a special seal
+• You carry it with you
+• When you enter, you show the letter
+• They check: "Is the seal real? Is it not expired?"
+• No need to remember you - the letter proves who you are!
+• PRO: Works perfectly even without a persistent server
 
-    if (result.rows.length === 0) {
-      console.log('✗ Login failed: no user found');
-      return res.status(401).send('Invalid username or password');
-    }
 
-    const storedPassword = result.rows[0].password;
-    const match = await bcrypt.compare(password, storedPassword);
+WHY THIS MATTERS FOR VERCEL:
+────────────────────────────
+• Vercel functions are "serverless" - they don't stay running
+• Each request might hit a different server
+• Old sessions won't work because Server A doesn't know about Server B's sessions
+• JWT solves this - every request brings its own identity!
 
-    if (!match) {
-      console.log('✗ Login failed: wrong password');
-      return res.status(401).send('Invalid username or password');
-    }
+────────────────────────────────────────────────────────────────────────────────
 
-    console.log('✓ User logged in successfully');
-    res.redirect('/secrets');
-  } catch (err) {
-    console.error('✗ Error logging in:', err.message);
-    res.status(500).send('Error logging in');
-  }
-});
+// OLD IMPORTS (commented out):
+// import session from 'express-session';
+// import passport from 'passport';
+// import { Strategy as LocalStrategy } from 'passport-local';
+
+// OLD SESSION MIDDLEWARE (commented out):
+// app.use(
+//   session({
+//     secret: process.env.SESSION_SECRET,
+//     resave: false,
+//     saveUninitialized: false,
+//   })
+// );
+
+// OLD PASSPORT SETUP (commented out):
+// app.use(passport.initialize());
+// app.use(passport.session());
+
+// OLD PASSPORT STRATEGY (commented out):
+// passport.use(
+//   new LocalStrategy(
+//     async (email, password, done) => {
+//       const user = await findUserByEmail(email);
+//       if (!user) return done(null, false, { message: "No user found" });
+//       const isValid = await verifyPassword(password, user.password);
+//       if (!isValid) return done(null, false, { message: "Incorrect password" });
+//       return done(null, user);
+//     }
+//   )
+// );
+
+// OLD SERIALIZE/DESERIALIZE (commented out):
+// passport.serializeUser((user, done) => {
+//   done(null, user.id);
+// });
+
+// passport.deserializeUser(async (id, done) => {
+//   const user = await findUserById(id);
+//   done(null, user);
+// });
+
+// OLD CHECK AUTHENTICATED (commented out):
+// function checkAuthenticated(req, res, next) {
+//   if (req.isAuthenticated()) {
+//     return next();
+//   }
+//   res.redirect("/login");
+// }
+
+// OLD LOGOUT (commented out):
+// app.get("/logout", (req, res) => {
+//   req.logout((err) => {
+//     if (err) return next(err);
+//     res.redirect("/");
+//   });
+// });
 
 */
 
-// ═══════════════════════════════════════════════════════════════════════════
-// START SERVER - Fire up the app!
-// ═══════════════════════════════════════════════════════════════════════════
 
-app.listen(port, async function () {
-  try {
-    // Test the database connection
-    const result = await pool.query('SELECT NOW()');
-    console.log(`✓ Server started on port ${port}`);
-    console.log('✓ Database connected:', result.rows[0]);
-  } catch (err) {
-    console.error('✗ Database connection error:', err.message);
-  }
-});
+// ═══════════════════════════════════════════════════════════════════════════════
+//                              END OF APP.JS
+// ═══════════════════════════════════════════════════════════════════════════════
+
+/*
+   LEARNING SUMMARY:
+
+   1. EXPRESS - Web framework for handling routes and requests
+   2. BCRYPT - Password security (NEVER store plain text passwords!)
+   3. JWT (JSON Web Tokens) - Stateless authentication
+      • Token contains user info + secret signature
+      • Server doesn't need to remember anyone
+      • Perfect for serverless/Vercel!
+   4. SUPABASE - Cloud database (PostgreSQL)
+   5. EJS - Template engine for dynamic HTML
+   6. RATE LIMITING - Protecting against spam and brute force attacks
+   7. ENVIRONMENT VARIABLES - Keeping secrets safe (never commit .env!)
+   8. COOKIES - Storing tokens securely (httpOnly for security)
+
+   SECURITY REMINDERS:
+   • Always hash passwords (bcrypt)
+   • Never commit secrets to GitHub (add .env to .gitignore!)
+   • Use HTTPS in production
+   • Validate all user input
+   • Use rate limiting on auth routes
+   • Store JWT in httpOnly cookies, not localStorage
+   • Keep your JWT_SECRET really secret!
+*/

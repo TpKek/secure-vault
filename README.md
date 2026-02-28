@@ -1,76 +1,76 @@
-# 🔐 Secrets Vault
+# Secrets Vault
 
-A production-ready secure authentication application demonstrating enterprise-grade security practices, full-stack development skills, and modern web development patterns.
+A production-ready secure authentication application demonstrating enterprise-grade security practices and full-stack development skills.
 
-![License](https://img.shields.io/badge/license-ISC-blue.svg)
-![Node.js](https://img.shields.io/badge/Node.js-18%2B-339933?style=flat&logo=node.js&logoColor=white)
-![Express.js](https://img.shields.io/badge/Express.js-4.x-000000?style=flat&logo=express&logoColor=white)
-![PostgreSQL](https://img.shields.io/badge/PostgreSQL-14+-336791?style=flat&logo=postgresql&logoColor=white)
-![EJS](https://img.shields.io/badge/EJS-%23B4CA65?style=flat&logoColor=white)
-
----
-
-## 📋 Overview
-
-**Secrets Vault** is a secure authentication system that allows users to register, login, and store sensitive information securely. This project showcases critical security implementations including password hashing, session management, rate limiting, and SQL injection prevention—essential skills for any full-stack developer working with sensitive user data.
-
-### Key Highlights
-
-- 🔒 **Enterprise-Grade Authentication** — Passport.js with LocalStrategy for secure login
-- 🛡️ **Defense in Depth** — Multiple security layers including bcrypt hashing, rate limiting, and input validation
-- 📊 **Production Database** — PostgreSQL (Supabase) with connection pooling
-- ⚡ **Modern Stack** — Express.js, EJS templating, session-based authentication
+[![Node.js](https://img.shields.io/badge/Node.js-18%2B-339933?style=flat&logo=node.js&logoColor=white)](https://nodejs.org)
+[![Express.js](https://img.shields.io/badge/Express.js-4.x-000000?style=flat&logo=express&logoColor=white)](https://expressjs.com)
+[![JWT](https://img.shields.io/badge/JWT-✓-CB171E?style=flat&logo=JSON%20Web%20Tokens&logoColor=white)](https://jwt.io)
+[![Supabase](https://img.shields.io/badge/Supabase-3ECF8E?style=flat&logo=supabase&logoColor=white)](https://supabase.com)
+[![Vercel](https://img.shields.io/badge/Vercel-000000?style=flat&logo=vercel&logoColor=white)](https://vercel.com)
+[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-14+-336791?style=flat&logo=postgresql&logoColor=white)](https://www.postgresql.org)
+[![EJS](https://img.shields.io/badge/EJS-%23B4CA65?style=flat&logoColor=white)](https://ejs.co)
 
 ---
 
-## 🛠️ Tech Stack
+## Overview
 
-| Layer | Technology |
-|-------|------------|
-| **Runtime** | Node.js 18+ |
-| **Framework** | Express.js 4.x |
-| **Database** | PostgreSQL (Supabase) |
-| **Authentication** | Passport.js + express-session |
-| **Security** | bcrypt, express-rate-limit |
-| **Templating** | EJS |
-| **Deployment** | Vercel |
+Secrets Vault is a secure authentication system that allows users to register, login, and store sensitive information securely. This project showcases critical security implementations including password hashing, JWT-based authentication, rate limiting, and input validation—essential skills for any full-stack developer.
+
+### Key Features
+
+- **JWT Authentication** — Stateless token-based auth perfect for serverless deployment
+- **Enterprise Security** — bcrypt hashing, rate limiting, input validation
+- **Cloud Database** — Supabase (PostgreSQL) or local PostgreSQL
+- **Modern Stack** — Express.js, EJS templating, Vercel-ready
 
 ---
 
-## 🔐 Security Features
+## Tech Stack
 
-This project demonstrates critical security best practices:
+| Category | Technology |
+|----------|------------|
+| Runtime | Node.js 18+ |
+| Framework | Express.js 4.x |
+| Database | PostgreSQL (Supabase or local) |
+| Authentication | JWT (jsonwebtoken) |
+| Security | bcrypt, express-rate-limit |
+| Templating | EJS |
+| Deployment | Vercel |
+
+---
+
+## Security Features
 
 ### Password Security
 - **bcrypt hashing** with 10 salt rounds for irreversible password storage
 - **Automatic salting** — identical passwords produce unique hashes
 - **Password validation** — length requirements and character validation
 
-### Authentication & Sessions
-- **Passport.js LocalStrategy** — industry-standard authentication
-- **Secure session management** with express-session
-- **Session serialization/deserialization** for persistent login
+### Authentication (JWT)
+- **Stateless tokens** — no server-side session storage required
+- **Secure cookie storage** — httpOnly, secure, sameSite flags
+- **Token expiration** — 24-hour token lifetime
 
-### Rate Limiting & Protection
-- **General API rate limiting** — 100 requests per 15 minutes
-- **Strict login protection** — 5 failed attempts per 15 minutes
-- **Input validation** — email format and password strength requirements
+### Rate Limiting
+- **General API** — 100 requests per 15 minutes
+- **Auth endpoints** — 5 failed attempts per 15 minutes (prevents brute force)
 
-### Database Security
-- **Parameterized queries** — prevents SQL injection attacks
-- **Connection pooling** — efficient database resource management
+### Input Validation
+- Email format validation using regex
+- Password strength requirements (8-20 characters)
+- SQL injection prevention via parameterized queries
 
 ---
 
-## 🚀 Getting Started
+## Getting Started
 
 ### Prerequisites
 
 - Node.js 18 or higher
-- PostgreSQL database (local or Supabase)
+- PostgreSQL (local or Supabase)
 - npm or yarn
 
-### Quick Start
+### Installation
 
 ```bash
 # Clone the repository
@@ -81,192 +81,232 @@ cd secure-vault
 
 # Install dependencies
 npm install
-
-# Configure environment
-cp .env.example .env
-# Edit .env with your database credentials
-
-# Start the server
-npm start
 ```
 
-The application will be available at `http://localhost:3000`
+---
 
-### Database Setup
+## Database Setup
 
-#### Option 1: Local PostgreSQL
+### Option 1: Local PostgreSQL (Recommended for Development)
 
-1. Create a PostgreSQL database named `secrets`
-2. Run the schema.sql file to create tables:
+1. Install PostgreSQL from [postgresql.org](https://www.postgresql.org/download/)
+2. Start the PostgreSQL service
+3. Create a database:
 
 ```bash
-psql -U your_user -d secrets -f schema.sql
+psql -U postgres
+CREATE DATABASE secrets;
+\q
 ```
 
-#### Option 2: Supabase (Recommended)
+4. Create a `.env` file (see below)
+5. Run the server - tables will be created automatically
 
-1. Create a Supabase project at [supabase.com](https://supabase.com)
+### Option 2: Supabase (Recommended for Production)
+
+1. Create a project at [supabase.com](https://supabase.com)
 2. Navigate to the SQL editor in your Supabase dashboard
 3. Copy and execute the contents of `schema.sql`
 4. Copy your connection details from Supabase settings
 
-### Environment Configuration
+---
+
+## Environment Configuration
 
 Create a `.env` file in the root directory:
 
+### For Local PostgreSQL:
+
 ```env
-# Database Configuration (Supabase or local PostgreSQL)
-DB_USER=your_database_user
-DB_HOST=your_database_host
+# Server Configuration
+PORT=3000
+NODE_ENV=development
+
+# Database Configuration (Local PostgreSQL)
+DB_USER=postgres
+DB_HOST=localhost
 DB_NAME=secrets
-DB_PASSWORD=your_database_password
+DB_PASSWORD=your_password
 DB_PORT=5432
 
-# Session Security
-SESSION_SECRET=your_secure_random_string_min_32_chars
+# JWT Security
+# Generate a secure random string:
+# node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
+JWT_SECRET=your-secure-jwt-secret-min-32-characters
+```
+
+### For Supabase:
+
+```env
+# Server Configuration
+PORT=3000
+NODE_ENV=development
+
+# Supabase Configuration
+# Get these from your Supabase project:
+# Project Settings > API
+SUPABASE_URL=https://your-project.supabase.co
+SUPABASE_ANON_KEY=your-supabase-anon-key
+
+# JWT Security
+JWT_SECRET=your-secure-jwt-secret-min-32-characters
 ```
 
 > **Note:** Never commit your `.env` file to version control. It's already included in `.gitignore`.
 
 ---
 
-## 📁 Project Structure
+## Running the Application
+
+### Start Development Server
+
+```bash
+npm start
+```
+
+The application will be available at `http://localhost:3000`
+
+### Test the App
+
+1. Open browser to `http://localhost:3000`
+2. Click "Create Account" to register
+3. Login with your credentials
+4. Submit some secrets
+5. Visit `/secrets` to see them
+
+---
+
+## Project Structure
 
 ```
-secure-vault/
+secrets-vault/
 ├── public/
 │   └── css/
-│       └── styles.css          # Custom styles
+│       └── styles.css          # Custom fintech-styled CSS
 ├── views/
 │   ├── partials/
-│   │   ├── header.ejs          # Navigation and meta tags
-│   │   └── footer.ejs          # Footer content
-│   ├── home.ejs                # Landing page
-│   ├── login.ejs               # Login form
-│   ├── register.ejs            # Registration form
-│   ├── secrets.ejs             # Protected secrets page
-│   └── submit.ejs              # Submit secret form
-├── .env                        # Environment variables (not committed)
-├── .gitignore                  # Git ignore patterns
-├── app.js                      # Main application entry point
-├── schema.sql                  # Database schema
-└── package.json                # Dependencies and scripts
+│   │   ├── header.ejs         # Navigation and meta tags
+│   │   └── footer.ejs         # Footer content
+│   ├── home.ejs               # Landing page
+│   ├── login.ejs              # Login form
+│   ├── register.ejs           # Registration form
+│   ├── secrets.ejs            # Protected secrets page
+│   └── submit.ejs             # Submit secret form
+├── .env                       # Environment variables (not committed)
+├── .gitignore                 # Git ignore patterns
+├── app.js                     # Main application entry point
+├── vercel.json                # Vercel deployment config
+├── schema.sql                 # Database schema
+└── package.json               # Dependencies and scripts
 ```
 
 ---
 
-## 🔧 API Routes
+## API Routes
 
-| Method | Route | Description | Auth Required |
-|--------|-------|-------------|---------------|
+| Method | Endpoint | Description | Auth |
+|--------|----------|-------------|------|
 | GET | `/` | Home page | No |
 | GET | `/login` | Login form | No |
 | GET | `/register` | Registration form | No |
 | POST | `/register` | Create new user | No |
 | POST | `/login` | Authenticate user | No |
-| GET | `/secrets` | View all secrets | Yes |
-| GET | `/submit` | Submit secret form | Yes |
-| POST | `/submit` | Save a new secret | Yes |
-| GET | `/logout` | End session | Yes |
+| GET | `/secrets` | View your secrets | Yes (JWT) |
+| GET | `/submit` | Submit secret form | Yes (JWT) |
+| POST | `/submit` | Save a new secret | Yes (JWT) |
+| GET | `/logout` | End session | Yes (JWT) |
+| GET | `/api/me` | Get current user | Yes (JWT) |
 
 ---
 
-## 📝 Key Implementation Details
+## Authentication Flow (JWT)
 
-### Authentication Flow
+### Registration
+1. User submits email/password
+2. Password hashed with bcrypt (10 rounds)
+3. User stored in PostgreSQL
 
-1. **Registration**: User submits email/password → Password hashed with bcrypt (10 rounds) → User stored in PostgreSQL
-2. **Login**: User submits credentials → Passport.js verifies against stored hash → Session created
-3. **Protected Routes**: Middleware checks `req.isAuthenticated()` → Grants or denies access
+### Login
+1. User submits credentials
+2. Password verified against stored hash
+3. JWT token generated with user ID and email
+4. Token sent to browser via httpOnly cookie
 
-### Database Schema
-
-```sql
--- Users table
-CREATE TABLE users (
-  id SERIAL PRIMARY KEY,
-  email VARCHAR(255) UNIQUE NOT NULL,
-  password VARCHAR(255) NOT NULL,  -- Store bcrypt hash, NOT plaintext
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
--- Secrets table
-CREATE TABLE secrets (
-  id SERIAL PRIMARY KEY,
-  user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
-  secret_text TEXT NOT NULL,
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-```
-
-### Session Configuration
-
-The application uses express-session with the following configuration:
-
-- **Cookie Settings**: `httpOnly: true`, `secure: false` (set to `true` in production with HTTPS)
-- **Session Duration**: Default session expiration
-- **Store**: Memory store (can be extended to Redis for production)
+### Protected Routes
+1. Request includes JWT cookie
+2. Middleware verifies token signature and expiration
+3. User ID extracted from token payload
+4. Access granted or denied
 
 ---
 
-## 🌐 Deployment
+## Deployment
 
-### Vercel Deployment
+### Vercel (Recommended)
 
-1. Connect your GitHub repository to Vercel
-2. Add environment variables in Vercel dashboard:
-   - `DB_USER`, `DB_HOST`, `DB_NAME`, `DB_PASSWORD`, `DB_PORT`
-   - `SESSION_SECRET`
-3. Deploy automatically on push to main branch
+1. Push code to GitHub
+2. Import project in Vercel dashboard
+3. Add environment variables:
+   - `JWT_SECRET`
+   - `SUPABASE_URL` (for Supabase)
+   - `SUPABASE_ANON_KEY` (for Supabase)
+   - Or local DB variables for local PostgreSQL
+4. Deploy automatically on push
 
-### Production Considerations
-
-- Enable HTTPS in production
-- Use a session store like Redis for scaled deployments
-- Implement email verification for user registration
-- Add CSRF protection for forms
-- Consider implementing OAuth providers (Google, GitHub, etc.)
+The `vercel.json` file handles routing for the Express application.
 
 ---
 
-## 📚 Learning Outcomes
+## Learning Outcomes
 
 This project demonstrates understanding of:
 
-- ✅ Secure password storage with hashing algorithms
-- ✅ Session-based authentication patterns
-- ✅ SQL injection prevention with parameterized queries
-- ✅ Rate limiting for brute-force protection
-- ✅ Input validation and sanitization
-- ✅ Environment variable management
-- ✅ PostgreSQL database design
-- ✅ RESTful API structure
-- ✅ Template rendering with EJS
-- ✅ Defense in depth security principles
+- Secure password storage with hashing algorithms
+- JWT-based authentication patterns
+- Token verification and middleware
+- SQL injection prevention
+- Rate limiting for brute-force protection
+- Input validation and sanitization
+- Environment variable management
+- PostgreSQL database design
+- Serverless deployment patterns
+- Defense in depth security principles
 
 ---
 
-## 👤 Author
+## Key Concepts Learned
+
+### JWT (JSON Web Tokens)
+JWT is a compact, URL-safe token format that securely transmits information between parties as a JSON object. Unlike sessions, JWTs are stateless—the server doesn't need to store user data.
+
+### Why JWT for Serverless?
+- No persistent server memory required
+- Each request carries its own authentication
+- Works across multiple server instances
+- Perfect for Vercel's serverless functions
+
+---
+
+## Author
 
 **Bertin Dreyer**
-
 - GitHub: [@TpKek](https://github.com/TpKek)
 - LinkedIn: [Bertin Dreyer](https://linkedin.com/in/bertin-dreyer)
 
 ---
 
-## 📄 License
+## License
 
 ISC License — See LICENSE file for details
 
 ---
 
-## 🤝 Contributing
+## Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.
 
 ---
 
 <div align="center">
-  <sub>Built with ❤️ using Node.js, Express, and PostgreSQL</sub>
+  Built with Node.js, Express, and PostgreSQL
 </div>
