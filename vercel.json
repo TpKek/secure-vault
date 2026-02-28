@@ -14,9 +14,5 @@
       "dest": "app.js"
     }
   ],
-  "env": {
-    "SUPABASE_URL": "NEXT_PUBLIC_SUPABASE_URL",
-    "SUPABASE_ANON_KEY": "NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY"
-  },
   "framework": null
 }

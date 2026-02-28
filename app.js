@@ -52,8 +52,15 @@ import { createClient } from '@supabase/supabase-js';
 
 dotenv.config();
 
-const supabaseUrl = process.env.SUPABASE_URL;
-const supabaseKey = process.env.SUPABASE_ANON_KEY;
+// Support both NEXT_PUBLIC_* (Vercel) and regular Supabase env vars
+const supabaseUrl = process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL;
+const supabaseKey = process.env.SUPABASE_ANON_KEY || process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY;
+
+if (!supabaseUrl || !supabaseKey) {
+  console.error("Missing Supabase credentials!");
+  console.error("SUPABASE_URL:", supabaseUrl);
+  console.error("SUPABASE_ANON_KEY:", supabaseKey ? "set" : "missing");
+}
 
 const supabase = createClient(supabaseUrl, supabaseKey);
 
