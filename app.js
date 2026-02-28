@@ -197,7 +197,7 @@ function extractToken(req) {
 // ═══════════════════════════════════════════════════════════════════════════════
 
 // Serve static files (CSS, images)
-app.use(express.static("public"));
+app.use(express.static(path.join(process.cwd(), "public")));
 
 // Use EJS for templates
 app.set("view engine", "ejs");
