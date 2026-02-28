@@ -18,12 +18,13 @@ A production-ready secure authentication application demonstrating enterprise-gr
 
 ## 📊 Two Versions Overview
 
-This project has **two authentication versions**:
+This project has **three authentication versions**:
 
 | Version | Status | Auth Method | Best For |
 |---------|--------|-------------|----------|
-| **Supabase Auth** | ✅ Current | Managed by Supabase | Production apps, less maintenance |
-| **Custom JWT** | 🔒 Legacy | Your own JWT + bcrypt | Learning JWT, full control |
+| **Passport.js** | ❌ Removed | Sessions + bcrypt | Learning purposes |
+| **Custom JWT** | 🔒 Legacy | Your own JWT + bcrypt | Learning JWT |
+| **Supabase Auth** | ✅ Current | Managed by Supabase | Production apps |
 
 ---
 
@@ -161,6 +162,41 @@ function generateToken(user) {
 ---
 
 ## 📈 Migration Journey
+
+### Auth Methods Evolution
+
+This project went through **3 authentication methods**:
+
+```
+Passport.js (sessions) → Custom JWT → Supabase Auth
+```
+
+| Version | Method | Status |
+|---------|--------|--------|
+| 1 | Passport.js + Sessions | ❌ Removed |
+| 2 | Custom JWT + bcrypt | 🔒 Legacy |
+| 3 | Supabase Auth | ✅ Current |
+
+### Passport.js (Original - Removed)
+
+The **first version** used Passport.js with local sessions:
+
+```javascript
+// OLD passport setup
+import passport from 'passport';
+import { Strategy as LocalStrategy } from 'passport-local';
+
+passport.use(new LocalStrategy(async (email, password, done) => {
+  // Find user and verify password
+}));
+
+app.use(passport.session());
+```
+
+**Why removed?**
+- Sessions don't work well with serverless (Vercel)
+- Each request might hit a different server
+- No shared session storage
 
 ### Why Migrate?
 
